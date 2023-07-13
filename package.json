@@ -1,0 +1,67 @@
+{
+  "name": "mojito-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "cross-env NODE_ENV=development nodemon",
+    "stop": "pm2 stop mojito-server",
+    "remove": "pm2 delete mojito-server",
+    "list": "pm2 list",
+    "logs": "pm2 logs",
+    "start": "pm2 start ecosystem.config.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fastify/formbody": "^7.4.0",
+    "@types/uuid": "^9.0.2",
+    "@types/ws": "^8.5.5",
+    "cross-env": "^7.0.3",
+    "dayjs": "^1.11.9",
+    "dotenv": "^16.3.1",
+    "ngulf": "^0.3.2",
+    "uuid": "^9.0.0",
+    "ws": "^8.13.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.9",
+    "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "colors": "^1.4.0",
+    "eslint": "^8.44.0",
+    "eslint-config-standard-with-typescript": "^36.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
+    "nodemon": "^3.0.1",
+    "pm2": "^5.3.0",
+    "prettier": "^2.1.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "test/*",
+      "docs/*",
+      "log/*",
+      "data/*"
+    ],
+    "delay": "1500"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.{js,ts}": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
+    ]
+  }
+}
