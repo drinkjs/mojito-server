@@ -17,12 +17,14 @@
   "license": "ISC",
   "dependencies": {
     "@fastify/formbody": "^7.4.0",
+    "@fastify/multipart": "^7.7.0",
+    "@fastify/static": "^6.10.2",
     "@types/uuid": "^9.0.2",
     "@types/ws": "^8.5.5",
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.9",
     "dotenv": "^16.3.1",
-    "ngulf": "^0.3.2",
+    "ngulf": "^0.3.3",
     "uuid": "^9.0.0",
     "ws": "^8.13.0"
   },

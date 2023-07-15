@@ -1,17 +1,17 @@
 import { IsMongoId, IsNotEmpty, MaxLength } from "ngulf/class-validator";
 
 export class ProjectDto {
-  @IsNotEmpty({ message: "请输入项目id", groups: ["update"] })
-  @IsMongoId({ message: "非法id", groups: ["update"] })
+  @IsNotEmpty({ groups: ["update"] })
+  @IsMongoId({ groups: ["update"] })
   id!: string;
 
-  @IsNotEmpty({ message: "请输入项目名称", groups: ["add", "update"] })
-  @MaxLength(30, { groups: ["add", "update"], message: "项目名称30字以内" })
+  @IsNotEmpty({ groups: ["add", "update"] })
+  @MaxLength(30, { groups: ["add", "update"] })
   name!: string;
 
-  createUser?: string;
+  userId!: string;
 
-  createTime?: string;
+  createAt?: string;
 
-  updateTime?: string;
+  updateAt?: string;
 }

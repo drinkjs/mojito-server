@@ -14,21 +14,20 @@ export default class ProjectService extends BaseService {
    * 新增项目
    * @param data
    */
-  async add (data: ProjectDto) {
-    const rel = await this.model.findOne({ name: data.name, status: 1 }).exec();
+  async add ({userId, name}: ProjectDto) {
+    const rel = await this.model.findOne({ userId, name, deleteAt: null }).exec();
     if (rel) {
       AppError.assert("项目已存在");
     }
 
-    if (!data.name) {
+    if (!name) {
       AppError.assert("请输入项目名称");
       return;
     }
     const project: ProjectEntity = {
-      name: data.name,
-      createTime: createStringDate(),
-      updateTime: createStringDate(),
-      status: 1,
+      userId,
+      name,
+      createAt: new Date(),
     };
     const { _id: id } = await this.model.create(project);
     return id;
@@ -37,12 +36,13 @@ export default class ProjectService extends BaseService {
   /**
    * 查询所有项目
    */
-  async findAll () {
+  async findAll (userId:string) {
     const rel = await this.model
-      .find({ status: 1 })
-      .sort({ createTime: -1 })
+      .find({ userId, deleteAt: null })
+      .sort({ createAt: -1 })
       .exec();
-    return rel.map((v) => this.toDtoObject<ProjectDto>(v));
+    const val = this.toObject(rel);
+    return val;
   }
 
   /**
@@ -52,24 +52,24 @@ export default class ProjectService extends BaseService {
   async findByName (name: string) {
     const rel = await this.model
       .findOne({ status: 1, name })
-      .sort({ createTime: -1 })
+      .sort({ createAt: -1 })
       .exec();
-    return rel && this.toDtoObject<ProjectDto>(rel);
+    return this.toObject(rel);
   }
 
   /**
    * 更新项目
    * @param data
    */
-  async update (data: ProjectDto) {
-    let rel = await this.model.findOne({ name: data.name, status: 1 }).exec();
+  async update (data: ProjectDto, userId:string) {
+    let rel = await this.model.findOne({ name: data.name, userId, deleteAt: null }).exec();
     if (rel && rel.id !== data.id) {
       AppError.assert("项目已存在");
     }
 
     rel = await this.model.findByIdAndUpdate(
       data.id,
-      { name: data.name, updateTime: createStringDate() },
+      { name: data.name, updateAt: new Date  },
       { omitUndefined: true }
     );
     return rel;
@@ -80,7 +80,7 @@ export default class ProjectService extends BaseService {
    * @param id
    */
   async delete (id: string) {
-    const rel = await this.model.findByIdAndUpdate(id, { status: 0 });
+    const rel = await this.model.findByIdAndUpdate(id, { deleteAt: new Date });
     return rel;
   }
 }

@@ -1,12 +1,11 @@
 import { IsMongoId, IsNotEmpty, MaxLength } from "ngulf/class-validator";
-import { DatasourceInfo, ScreenOptions } from "../entity/ScreenEntity";
 import { LayerDto } from "./LayerDto";
 import { ProjectDto } from "./ProjectDto";
 
 export class ScreenDto {
   @IsMongoId({ message: "非法projectId", groups: ["add"] })
   @IsNotEmpty({ message: "请输入项目id", groups: ["add"] })
-  projectId?: string;
+  projectId!: string;
 
   @IsMongoId({
     message: "非法id",

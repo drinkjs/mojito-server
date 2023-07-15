@@ -1,5 +1,4 @@
 import { IsMongoId, IsNotEmpty, MaxLength } from "ngulf/class-validator";
-import { LayerApi, LayerStyle, RelativePosition } from "../entity/LayerEntity";
 import { ComponentDto } from "./ComponentDto";
 
 export class LayerDto {
@@ -30,7 +29,7 @@ export class LayerDto {
   eventLock?: boolean; // 事件锁定，组件不再响应交互事件
 
   @IsNotEmpty({ message: "style不能为空", groups: ["add"] })
-  style!: LayerStyle;
+  style!: { [key: string]: any };
 
   api?: LayerApi;
 

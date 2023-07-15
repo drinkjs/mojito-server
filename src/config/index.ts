@@ -7,26 +7,24 @@ dotenv.config({ path: `./.env.${process.env.NODE_ENV}` });
 const staticPath = process.env.STATIC_PATH || `${process.cwd()}/public`;
 console.info(staticPath.bgBlue);
 
-export type IConfig = NgulfHttpOptions | NgulfHtt2Options | NgulfHttsOptions;
-
-// export interface IConfig extends NgulfOptions {
-//   readonly sessionSecret: string;
-//   readonly port: number;
-//   readonly staticPrefix: string;
-//   readonly staticPath: string;
-//   readonly libPath: string;
-// }
+export type IConfig = {
+  staticPath:string,
+  staticPrefix:string,
+} & (NgulfHttpOptions | NgulfHtt2Options | NgulfHttsOptions);
 
 const defaultConfig: IConfig & { port: number } = {
   port: 3838,
   websocket: true, // 是否启用websocket
   logger: false,
   controllers: path.join(__dirname, "../controller"),
+  staticPath,
+  staticPrefix: "/public/",
   mongo: {
     // see https://mongoosejs.com/
     uris: "mongodb://127.0.0.1:27017/",
     options: {
       dbName: "mojito",
+      autoCreate: true,
       // useNewUrlParser: true,
       // useUnifiedTopology: true,
       autoIndex: false,

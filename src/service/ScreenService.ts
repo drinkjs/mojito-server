@@ -2,18 +2,12 @@ import { mongoose } from "@typegoose/typegoose";
 import { Injectable, MgModel, MgModelType, AppError } from "ngulf";
 import { DatasourceDto, ScreenDto } from "../dto";
 import { createStringDate } from "../common/utils";
-import ScreenEntity, { DatasourceInfo } from "../entity/ScreenEntity";
+import ScreenEntity from "../entity/ScreenEntity";
 import BaseService from "./BaseService";
-import ProjectService from "./ProjectService";
-import ComponentService from "./ComponentService";
 
 @Injectable()
 export default class ScreenService extends BaseService {
   constructor (
-    // eslint-disable-next-line no-unused-vars
-    private readonly projectService: ProjectService,
-    // eslint-disable-next-line no-unused-vars
-    private readonly componentService: ComponentService
   ) {
     super();
   }
@@ -25,7 +19,7 @@ export default class ScreenService extends BaseService {
    * 新增页面
    * @param data
    */
-  async add (data: ScreenDto) {
+  async add (data: ScreenDto, userId:string) {
     const rel = await this.model
       .findOne({ name: data.name, status: 1, projectId: data.projectId })
       .exec();
@@ -34,13 +28,13 @@ export default class ScreenService extends BaseService {
     }
 
     const project: ScreenEntity = {
-      projectId: undefined,
+      projectId: data.projectId,
       name: data.name,
       style: data.style,
-      createTime: createStringDate(),
-      updateTime: createStringDate(),
+      createAt: new Date(),
+      updateAt: new Date(),
       dataSources: [],
-      status: 1,
+      userId
     };
     const { _id: id } = await this.model.create({
       ...project,
@@ -54,64 +48,10 @@ export default class ScreenService extends BaseService {
    */
   async findByProject (projectId: string) {
     const rel = await this.model
-      .find({ status: 1, projectId }, { status: 0, projectId: 0 })
+      .find({ deleteAt: null, projectId })
       .sort({ updateTime: -1 })
       .exec();
-    return rel ? rel.map((v) => this.toDtoObject<ScreenDto>(v)) : [];
-  }
-
-  /**
-   * 查询项目下的所有页面
-   */
-  async findByProjectName (name: string) {
-    const projectInfo = await this.projectService.findByName(name);
-    if (!projectInfo) return [];
-    const rel = await this.model
-      .find(
-        { status: 1, projectId: projectInfo.id },
-        { status: 0, projectId: 0 }
-      )
-      .sort({ updateTime: -1 })
-      .exec();
-    return rel && rel.map((v) => this.toDtoObject<ScreenDto>(v));
-  }
-
-  /**
-   * 通过项目名和页面名查询明细
-   * @param projectName
-   * @param screenName
-   * @returns
-   */
-  async findByName (projectName: string, screenName: string) {
-    const projectInfo = await this.projectService.findByName(projectName);
-    if (!projectInfo) return null;
-    const rel = await this.model
-      .findOne(
-        { name: screenName, status: 1, projectId: projectInfo.id },
-        { coverImg: 0, createTime: 0, status: 0 }
-      )
-      .exec();
-    if (!rel) return null;
-    const detail = this.toDtoObject<ScreenDto>(rel);
-    if (rel && detail) {
-      if (rel.layers && rel.layers.length > 0) {
-        // 查询图层组件信息
-        const componentIds = rel.layers.map((v) => v.component);
-        const components = await this.componentService.findByIds(componentIds);
-        rel.layers.forEach((layer, index) => {
-          const component = components.find(
-            (comp) => comp!.id === layer.component
-          );
-          if (component && detail.layers) {
-            detail.layers[index].component = component;
-          }
-        });
-      }
-    }
-    const { name, id } = projectInfo;
-    detail!.project = { name, id };
-    // delete detail.projectId;
-    return detail;
+    return rel ? this.toObject(rel) : [];
   }
 
   /**
@@ -119,35 +59,15 @@ export default class ScreenService extends BaseService {
    * @param id
    * @returns
    */
-  async findDetailById (id: string, projectId?: any) {
+  async findDetailById (id: string) {
     if (!id || !mongoose.Types.ObjectId.isValid(id)) return null;
 
     const rel = await this.model
-      .findOne({ _id: id, status: 1 }, { coverImg: 0, createTime: 0 })
+      .findOne({ _id: id, deleteAt: null }, { coverImg: 0 })
       .populate({ path: "projectId", select: "name" })
       .exec();
     if (!rel) return null;
-    const detail = this.toDtoObject<ScreenDto>(rel);
-    if (rel && detail) {
-      if (rel.layers && rel.layers.length > 0) {
-        // 查询图层组件信息
-        const componentIds = rel.layers.map((v) => v.component);
-        const components = await this.componentService.findByIds(componentIds);
-        rel.layers.forEach((layer, index) => {
-          const component = components.find(
-            (comp) => comp!.id === layer.component
-          );
-          if (component && detail.layers) {
-            detail.layers[index].component = component;
-          }
-        });
-      }
-      const project: any = rel.projectId;
-      const { name, _id } = project;
-      detail.project = { name, id: _id };
-      // delete detail.projectId;
-    }
-    return detail;
+    return this.toObject(rel);
   }
 
   /**
@@ -210,7 +130,7 @@ export default class ScreenService extends BaseService {
    * @param id
    */
   async delete (id: string) {
-    const rel = await this.model.findByIdAndUpdate(id, { status: 0 });
+    const rel = await this.model.findByIdAndUpdate(id, { deleteAt: new Date });
     return rel;
   }
 

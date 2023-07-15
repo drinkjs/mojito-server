@@ -30,7 +30,7 @@ export default class ComponentService extends BaseService {
       });
       return [{ id, name, icon }];
     }
-    return rel.map((v) => this.toDtoObject<ComponentTypeDto>(v));
+    return this.toObject(rel);
   }
 
   /**
@@ -94,23 +94,23 @@ export default class ComponentService extends BaseService {
    */
   async findAll (type?: string) {
     const rel = await this.model.find({ type }).exec();
-    return rel ? rel.map((v) => this.toDtoObject<ComponentDto>(v)) : [];
+    return rel ? this.toObject(rel) : [];
   }
 
   async findByName (name: string, version: string) {
     const rel = await this.model.findOne({ name, version }).exec();
-    return rel && this.toDtoObject<ComponentDto>(rel);
+    return this.toObject(rel);
   }
 
   async findById (id: string) {
     const rel = await this.model.findOne({ _id: id }).exec();
-    return rel && this.toDtoObject<ComponentDto>(rel);
+    return this.toObject(rel);
   }
 
   async findByIds (ids: string[]) {
     const orIds = ids.map((id) => ({ _id: id }));
     const rel = await this.model.find({ $or: orIds }).exec();
-    return rel.map((v) => this.toDtoObject<ComponentDto>(v));
+    return this.toObject(rel) || [];
   }
 
   async add (data: ComponentDto) {

@@ -6,6 +6,7 @@ import {
   Query,
   Validation,
   BaseController,
+  Headers
 } from "ngulf";
 import { DatasourceDto, ScreenDto } from "../dto";
 import ScreenService from "../service/ScreenService";
@@ -22,12 +23,8 @@ export default class ScreenController extends BaseController {
    * @param dto
    */
   @Post("/add")
-  async add (@Body(new Validation({ groups: ["add"] })) dto: ScreenDto) {
-    dto.name = dto.name.replace("/", "");
-    if (!dto.name) {
-      return this.fail("添加失败");
-    }
-    const relId = await this.service.add(dto);
+  async add (@Body(new Validation({ groups: ["add"] })) dto: ScreenDto, @Headers("x-token") token:string) {
+    const relId = await this.service.add(dto, token);
     if (relId) return this.success(relId);
     return this.fail("添加失败");
   }
@@ -39,16 +36,6 @@ export default class ScreenController extends BaseController {
   @Get("/list")
   async list (@Query("projectId") projectId: string) {
     const rel = await this.service.findByProject(projectId);
-    return this.success(rel);
-  }
-
-  /**
-   * 通过项目名返回页面
-   * @param name
-   */
-  @Get("/list/projectName")
-  async listByProjectName (@Query("name") name: string) {
-    const rel = await this.service.findByProjectName(name);
     return this.success(rel);
   }
 
@@ -113,21 +100,6 @@ export default class ScreenController extends BaseController {
   @Get("/detail")
   async detail (@Query("id") id: string) {
     const rel = await this.service.findDetailById(id);
-    return rel ? this.success(rel) : this.fail("页面不存在");
-  }
-
-  /**
-   * 通过项目名和页面名查页面明细
-   * @param dto
-   */
-  @Post("/view/detail")
-  async previewDetail (
-    @Body() dto: { projectName: string; screenName: string }
-  ) {
-    const rel =
-      dto.screenName && dto.projectName
-        ? await this.service.findByName(dto.projectName, dto.screenName)
-        : null;
     return rel ? this.success(rel) : this.fail("页面不存在");
   }
 

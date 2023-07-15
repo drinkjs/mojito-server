@@ -23,7 +23,11 @@
     "esModuleInterop": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "paths": {
+      "*" : ["src/types/*"],
+      "@/*": ["src/*"]
+    }
   },
   "files": [
     "src/main.ts"

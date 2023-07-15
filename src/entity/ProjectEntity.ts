@@ -1,18 +1,18 @@
 import { prop } from "ngulf/typegoose";
 
 export default class Project {
-  @prop({ required: true })
+  @prop({ required: true, })
   name!: string;
 
   @prop()
-  createTime?: string;
+  createAt?: Date;
 
   @prop()
-  updateTime?: string;
+  updateAt?: Date;
 
-  @prop()
-  createUser?: string;
+  @prop({required: true, select: false})
+  userId!: string;
 
-  @prop({ default: 0, select: false })
-  status?:number; // 0:删除1正常;
+  @prop({ select: false, default: null })
+  deleteAt?: Date;
 }

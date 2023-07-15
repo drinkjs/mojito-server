@@ -1,5 +1,6 @@
 import { AppError } from "ngulf";
 import { FastifyInstance } from "fastify";
+import config from "../config";
 
 export default async function hook (server: FastifyInstance) {
   // 异常处理
@@ -20,4 +21,19 @@ export default async function hook (server: FastifyInstance) {
       });
     }
   });
+
+  server.addHook("onRequest", async (request, reply)=>{
+    const url = request.url;
+    if(url.indexOf(config.staticPrefix) === 0){
+      // 访问静态资源
+      return;
+    }
+    const token = request.headers["x-token"] as string;
+    if(!token){
+      reply.send({
+        code: -1,
+        msg: "No Token",
+      });
+    }
+  })
 }

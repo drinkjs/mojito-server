@@ -2,7 +2,7 @@
 import mongoose, { ToObjectOptions } from "ngulf/mongoose";
 
 export default class BaseService {
-  toDtoObject<T> (value: mongoose.Document, options?: ToObjectOptions): T {
+  private transform<T extends mongoose.Document>(value: T, options?: ToObjectOptions):T {
     return value.toObject({
       versionKey: false,
       // eslint-disable-next-line no-unused-vars
@@ -13,5 +13,13 @@ export default class BaseService {
       },
       ...options,
     });
+  }
+
+  toObject<T=any>(value: mongoose.Document<any, any, T> | mongoose.Document<any, any, T>[] | null, options?: ToObjectOptions){
+    if(!value) return null;
+    if(Array.isArray(value)){
+      return value.map(v => this.transform(v, options))
+    }
+    return this.transform(value, options)
   }
 }

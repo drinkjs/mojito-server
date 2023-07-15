@@ -1,9 +1,9 @@
 import Ngulf from "ngulf";
 import config from "./config";
 import hooks from "./hooks";
-// import plugin from "./plugin";
+import plugin from "./plugin";
 
-const app = Ngulf.create({ ...config, hooks });
+const app = Ngulf.create({ ...config, hooks, plugin });
 app
   .listen({
     port: config.port,

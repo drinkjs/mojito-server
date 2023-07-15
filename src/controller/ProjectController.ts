@@ -6,6 +6,7 @@ import {
   Body,
   Validation,
   BaseController,
+  Headers,
 } from "ngulf";
 import { ProjectDto } from "../dto";
 import ProjectService from "../service/ProjectService";
@@ -22,11 +23,9 @@ export default class ProjectController extends BaseController {
    * @param dto
    */
   @Post("/add")
-  async add (@Body(new Validation({ groups: ["add"] })) dto: ProjectDto) {
-    dto.name = dto.name.replace("/", "");
-    if (!dto.name) {
-      return this.fail("添加失败");
-    }
+  async add (@Body(new Validation({ groups: ["add"] })) dto: ProjectDto, @Headers("x-token") token:string) {
+    // TODO 实现用户系统时要改回真实的userId
+    dto.userId = token;
     const relId = await this.service.add(dto);
     if (relId) return this.success(relId);
     return this.fail("添加失败");
@@ -37,12 +36,8 @@ export default class ProjectController extends BaseController {
    * @param dto
    */
   @Post("/update")
-  async update (@Body(new Validation({ groups: ["update"] })) dto: ProjectDto) {
-    dto.name = dto.name.replace("/", "");
-    if (!dto.name) {
-      return this.fail("添加失败");
-    }
-    const rel = await this.service.update(dto);
+  async update (@Body(new Validation({ groups: ["update"] })) dto: ProjectDto, @Headers("x-token") token:string) {
+    const rel = await this.service.update(dto, token);
     if (rel) return this.success(null);
     return this.fail("更新失败");
   }
@@ -51,8 +46,8 @@ export default class ProjectController extends BaseController {
    * 项目列表
    */
   @Get("/list")
-  async list () {
-    const rel = await this.service.findAll();
+  async list (@Headers("x-token") token:string) {
+    const rel = await this.service.findAll(token);
     return this.success(rel);
   }
 
