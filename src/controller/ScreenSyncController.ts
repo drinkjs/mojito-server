@@ -4,7 +4,7 @@ import {
   Get,
   Query,
   WebSocketServer,
-  Ws,
+  WSS,
   WebsocketEvent,
   WsClient,
   WebsocketEmitter,
@@ -61,7 +61,7 @@ export default class ScreenSyncController extends BaseController {
    * 页面断开连接
    * @param event
    */
-  @Ws(WebsocketEvent.disconnect)
+  @WSS(WebsocketEvent.disconnect)
   disconnect (target: WsClient) {
     const { room } = target;
     this.sendAll(room, {
@@ -73,7 +73,7 @@ export default class ScreenSyncController extends BaseController {
   /**
    * 页面加入房间
    */
-  @Ws("/join")
+  @WSS("/join")
   join (data: JoinPage, target: WsClient) {
     // data里的数据
     const { room } = data;
@@ -90,7 +90,7 @@ export default class ScreenSyncController extends BaseController {
   /**
    * 组件状态同步
    */
-  @Ws("/sync")
+  @WSS("/sync")
   sync (data: StateSyncMsg, target: WsClient) {
     const { room, data: pageInfo } = target;
     this.sendAll(
@@ -108,7 +108,7 @@ export default class ScreenSyncController extends BaseController {
    * 数据同步到指定页面
    * @param {*} event 事件对象
    */
-  @Ws("/syncPage")
+  @WSS("/syncPage")
   syncPage (data: SyncPageMsg, target: WsClient) {
     const { room } = target;
     this.sendAll(

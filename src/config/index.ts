@@ -10,9 +10,10 @@ console.info(staticPath.bgBlue);
 export type IConfig = {
   staticPath:string,
   staticPrefix:string,
+  port: number
 } & (NgulfHttpOptions | NgulfHtt2Options | NgulfHttsOptions);
 
-const defaultConfig: IConfig & { port: number } = {
+const defaultConfig: IConfig = {
   port: 3838,
   websocket: true, // 是否启用websocket
   logger: false,

@@ -24,7 +24,7 @@ export default class ProjectController extends BaseController {
    */
   @Post("/add")
   async add (@Body(new Validation({ groups: ["add"] })) dto: ProjectDto, @Headers("x-token") token:string) {
-    // TODO 实现用户系统时要改回真实的userId
+    // TODO 实现用户系统
     dto.userId = token;
     const relId = await this.service.add(dto);
     if (relId) return this.success(relId);

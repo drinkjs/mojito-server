@@ -25,7 +25,7 @@ export class ScreenDto {
 
   createUser?: string;
 
-  createTime?: string;
+  createAt?: string;
 
   @IsNotEmpty({ message: "请上传封面图片", groups: ["coverImg"] })
   coverImg?: string;

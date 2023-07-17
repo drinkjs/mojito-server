@@ -1,16 +1,22 @@
-import { modelOptions, prop } from "ngulf/typegoose";
+import { modelOptions, mongoose, prop, Severity } from "ngulf/typegoose";
 
-@modelOptions({ options: { customName: "component_type" } })
+@modelOptions({ options: { customName: "component_type", allowMixed: Severity.ALLOW } })
 export default class ComponentType {
-  @prop({ required: true })
+  @prop({ required: true, unique: true })
   name!: string;
 
   @prop()
-  pid?: string;
+  pid?: mongoose.Types.ObjectId;
 
   @prop()
   icon?: string;
 
-  @prop({ default: 0, select: false })
-  status?:number; // 0:删除1正常;
+  @prop()
+  createAt?: Date;
+
+  @prop()
+  updateAt?: Date;
+
+  @prop({ select: false, default: null })
+  deleteAt?: Date;
 }

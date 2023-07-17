@@ -1,57 +1,41 @@
-import { modelOptions, mongoose, prop, Severity } from "ngulf/typegoose";
-
-export interface ComponentProps {
-  [propsName: string]: {
-    type?: string;
-    comment?: string;
-    default?: any;
-  };
-}
-
-export interface ComponentEvents {
-  [eventName: string]: {
-    comment?: string;
-  };
-}
+import { index, modelOptions, mongoose, prop, Severity } from "ngulf/typegoose";
 
 @modelOptions({ options: { allowMixed: Severity.ALLOW } })
+@index({ name: 1, version:1 }, { unique: true })
 export default class Component {
   @prop({ required: true })
   name!: string;
 
-  @prop()
-  title!: string;
+  @prop({ required: true })
+  packUrl!: string;
+
+  @prop({ required: true })
+  version!: string;
+
+  @prop({ required: true })
+  components!: {export:string, name:string}[];
 
   @prop({ required: true })
   type!: mongoose.Types.ObjectId;
 
   @prop()
-  coverImg?: string;
+  cover?: string;
 
   @prop()
-  createTime?: string;
+  createAt?: Date;
 
   @prop()
-  updateTime?: string;
+  updateAt?: Date;
 
-  @prop()
-  createUser?: string;
+  @prop({default: null, select: false})
+  deleteAt?: Date;
 
-  @prop({ default: 2 })
+  @prop({ required: true, select: false })
+  userId!: string;
+
+  @prop({ default: 2, type: Number, select: false })
   origin!: 1 | 2; // 来源:1系统2第三方
 
   @prop()
-  props?: ComponentProps;
-
-  @prop()
-  events?: ComponentEvents;
-
-  @prop()
-  version!: string;
-
-  @prop()
-  developLib!: string; // 组件开发的底层库，现阶段支持React, Vue2, Vue3
-
-  @prop()
-  dependencies?: string[]; // 组件依赖库的CDN地址 如：https://lib.baomitu.com/vue/3.0.7/vue.global.js
+  external?:Record<string, string>
 }
