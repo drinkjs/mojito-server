@@ -107,6 +107,17 @@ export default class ComponentController extends BaseController {
 		return this.fail(`GET ${packUrl} ${res}`);
 	}
 
+	/**
+	 * 组件库明细
+	 * @param id 
+	 * @returns 
+	 */
+	@Get("/pack/detail")
+	async getPackScript(@Query("id") id: string) {
+		const rel = await this.service.findById(id);
+		return this.success(rel);
+	}
+
 	// /**
 	//  * 上传组件
 	//  * @param file
