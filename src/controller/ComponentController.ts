@@ -1,6 +1,3 @@
-import * as fs from "fs";
-import * as path from "path";
-import { v4 as uuidv4 } from "uuid";
 import {
 	Body,
 	Controller,
@@ -8,25 +5,11 @@ import {
 	Post,
 	Query,
 	Validation,
-	AppError,
-	RouterContext,
 	BaseController,
   Headers
 } from "ngulf";
 import { ComponentDto, ComponentTypeDto } from "../dto";
 import ComponentService from "../service/ComponentService";
-import { tmpdir } from "os";
-import config from "../config";
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-// const { ncp } = require("ncp");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-// const rimraf = require("rimraf");
-
-// function rmdir (dir: string) {
-//   return rimraf.sync(dir);
-// }
-
 @Controller("/component")
 export default class ComponentController extends BaseController {
 	constructor(private readonly service: ComponentService) {

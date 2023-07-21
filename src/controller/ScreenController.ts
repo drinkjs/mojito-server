@@ -23,8 +23,8 @@ export default class ScreenController extends BaseController {
    * @param dto
    */
   @Post("/add")
-  async add (@Body(new Validation({ groups: ["add"] })) dto: ScreenDto, @Headers("x-token") token:string) {
-    const relId = await this.service.add(dto, token);
+  async add (@Body(new Validation({ groups: ["add"] })) dto: ScreenDto) {
+    const relId = await this.service.add(dto);
     if (relId) return this.success(relId);
     return this.fail("添加失败");
   }
@@ -101,33 +101,5 @@ export default class ScreenController extends BaseController {
   async detail (@Query("id") id: string) {
     const rel = await this.service.findDetailById(id);
     return rel ? this.success(rel) : this.fail("页面不存在");
-  }
-
-  /**
-   * 添加数据源连接
-   * @param dto
-   * @returns
-   */
-  @Post("/datasource/add")
-  async addDatasource (
-    @Body(new Validation({ groups: ["add"] })) dto: DatasourceDto
-  ) {
-    const rel = await this.service.addDatasource(dto.screenId, dto);
-    return rel ? this.success(rel) : this.fail("添加失败");
-  }
-
-  /**
-   * 删除数据源连接
-   * @param dto
-   * @returns
-   */
-  @Post("/datasource/delete")
-  async delDatasource (
-    @Body(new Validation({ groups: ["delete"] })) dto: DatasourceDto
-  ) {
-    const rel = dto.id
-      ? await this.service.delDatasource(dto.screenId, dto.id)
-      : false;
-    return rel ? this.success(rel) : this.fail("删除失败");
   }
 }

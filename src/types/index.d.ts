@@ -27,27 +27,27 @@ declare global {
     fontFamily?: string;
     fontSize?: string;
   }
-  interface LayerInfo {
-    name: string;
-    initSize: boolean;
-    style: Record<string, string | number>;
-    component: string; // 只保存组件id
-    updateFlag?: string | number;
-    props?: { [key: string]: any };
-    events?: { [key: string]: any };
-    eventLock?: boolean;
-    api?: string;
-    isHide?: boolean;
-    isLock?: boolean;
+  
+  type LayerEvent = {
+    [key: string]: { code: string; isSync: boolean };
+  }
+  
+  type Layer = {
+    id:string,
+    name:string,
+    style:Record<string, any>
+    props?: Record<string, any>
+    eventHandler?: LayerEvent;
+    eventLock?: boolean; // 事件锁定，锁定后图层内组件不能交互
+    hide?: boolean;
+    lock?: boolean;
     group?: string;
-    isGroupLock?: boolean;
-    isGroupHide?: boolean;
-    reloadKey?: number;
-    anime?: { [key: string]: any };
-    relativePosition?: {
-      x?: RelativePosition;
-      y?: RelativePosition;
-    }; // 相对位置
+    isFirst?: boolean;
+    component:{
+      export: string;
+      name: string;
+      packId:string;
+    }
   }
 
   interface DatasourceInfo {

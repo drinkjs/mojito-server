@@ -1,5 +1,4 @@
 import { IsMongoId, IsNotEmpty, MaxLength } from "ngulf/class-validator";
-import { LayerDto } from "./LayerDto";
 import { ProjectDto } from "./ProjectDto";
 
 export class ScreenDto {
@@ -30,7 +29,7 @@ export class ScreenDto {
   @IsNotEmpty({ message: "请上传封面图片", groups: ["coverImg"] })
   coverImg?: string;
 
-  layers?: LayerDto[];
+  layers?: Layer[];
 
   project?: ProjectDto;
 

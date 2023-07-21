@@ -22,13 +22,7 @@ export default class Screen {
   coverImg?: string;
 
   @prop()
-  layers?: LayerInfo[];
-
-  @prop()
-  dataSources?: DatasourceInfo[];
-
-  @prop({required: true, select: false})
-  userId!: string;
+  layers?: Layer[];
 
   @prop({ select: false, default: null })
   deleteAt?: Date;

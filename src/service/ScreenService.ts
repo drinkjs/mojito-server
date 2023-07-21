@@ -19,7 +19,7 @@ export default class ScreenService extends BaseService {
    * 新增页面
    * @param data
    */
-  async add (data: ScreenDto, userId:string) {
+  async add (data: ScreenDto) {
     const rel = await this.model
       .findOne({ name: data.name, status: 1, projectId: data.projectId })
       .exec();
@@ -27,17 +27,15 @@ export default class ScreenService extends BaseService {
       AppError.assert("页面已存在");
     }
 
-    const project: ScreenEntity = {
+    const view: ScreenEntity = {
       projectId: data.projectId,
       name: data.name,
       style: data.style,
       createAt: new Date(),
       updateAt: new Date(),
-      dataSources: [],
-      userId
     };
     const { _id: id } = await this.model.create({
-      ...project,
+      ...view,
       projectId: new mongoose.Types.ObjectId(data.projectId),
     });
     return id;
@@ -99,14 +97,14 @@ export default class ScreenService extends BaseService {
    * @returns
    */
   async updateScreen (data: ScreenDto) {
+    const updateData:any = data;
+    delete updateData.createAt;
+    delete updateData.projectId;
     const rel = await this.model.findByIdAndUpdate(
-      data.id,
+      updateData.id,
       {
-        layers: data.layers
-          ? data.layers.map((v) => ({ ...v, component: v.component?.id }))
-          : [],
-        style: data.style,
-        updateTime: createStringDate(),
+       ...updateData,
+        updateAt: new Date,
       },
       { omitUndefined: true }
     );
@@ -132,57 +130,5 @@ export default class ScreenService extends BaseService {
   async delete (id: string) {
     const rel = await this.model.findByIdAndUpdate(id, { deleteAt: new Date });
     return rel;
-  }
-
-  /**
-   * 新增数据源
-   * @param id
-   * @param imgPath
-   * @returns
-   */
-  async addDatasource (id: string, dto: DatasourceDto) {
-    const rel = await this.model.findById(id);
-
-    if (rel && rel.dataSources) {
-      const datasource = rel.dataSources.find(
-        (v) =>
-          `${v.type}://${v.host}:${v.port}@${v.username}` ===
-          `${dto.type}://${dto.host}:${dto.port}@${dto.username}`
-      );
-      if (datasource) {
-        AppError.assert("数据源已存在");
-      }
-    }
-
-    const data: DatasourceInfo = {
-      id: new mongoose.Types.ObjectId(),
-      type: dto.type,
-      host: dto.host,
-      port: dto.port,
-      username: dto.username,
-      password: dto.password || "",
-      database: dto.database,
-    };
-    return await this.model.updateOne(
-      { _id: id },
-      { updateTime: createStringDate(), $push: { dataSources: data } }
-    );
-  }
-
-  /**
-   * 删除数据源
-   * @param id
-   * @returns
-   */
-  async delDatasource (screenId: string, datasourceId: string) {
-    return await this.model.updateOne(
-      { _id: screenId },
-      {
-        updateTime: createStringDate(),
-        $pull: {
-          dataSources: { id: new mongoose.Types.ObjectId(datasourceId) },
-        },
-      }
-    );
   }
 }
