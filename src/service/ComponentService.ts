@@ -90,8 +90,10 @@ export default class ComponentService extends BaseService {
 		return this.toObject(rel);
 	}
 
-	async findById(id: string) {
-		const rel = await this.model.findOne({ _id: id, deleteAt: null }).exec();
+	async findById(id: string | string[]) {
+		const rel = typeof id  === "string" ? 
+			await this.model.findOne({ _id: id, deleteAt: null }).exec() :
+			await this.model.find({ _id: id, deleteAt: null }).exec()
 		return this.toObject(rel);
 	}
 

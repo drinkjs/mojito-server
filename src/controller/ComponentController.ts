@@ -95,30 +95,11 @@ export default class ComponentController extends BaseController {
 	 * @param id 
 	 * @returns 
 	 */
-	@Get("/pack/detail")
-	async getPackScript(@Query("id") id: string) {
+	@Post("/pack/detail")
+	async getPackScript(@Body("id") id: string | string[]) {
 		const rel = await this.service.findById(id);
 		return this.success(rel);
 	}
-
-	// /**
-	//  * 上传组件
-	//  * @param file
-	//  */
-	// @Post("/upload")
-	// async upload (ctx: RouterContext) {
-	//   const { req } = ctx;
-	//   const data = await req.file();
-	//   const fields = data.fields as any;
-	//   const rel = await this.unzip(
-	//     data.file,
-	//     this.libSavePath,
-	//     fields.libId ? fields.libId.value : undefined
-	//   ).catch((error: Error) => {
-	//     AppError.assert(error ? error.message : "上传失败");
-	//   });
-	//   return this.success(rel);
-	// }
 
 	/**
 	 * 增加三方组件
@@ -135,54 +116,4 @@ export default class ComponentController extends BaseController {
     }
 	  return this.fail("添加失败");
 	}
-
-	// /**
-	//  * 修改三方组件
-	//  * @param dto
-	//  */
-	// @Post("/update")
-	// async updateComponent (
-	//   @Body(new Validation({ groups: ["update"] })) dto: ComponentDto
-	// ) {
-	//   const rel = await this.service.update({ ...dto, origin: 2 });
-	//   // 复制文件
-	//   const dest = this.libSavePath;
-	//   const savePath = `${dest}/${dto.name}${dto.version}`;
-	//   const directory = `${dest}/${dto.sid}`;
-	//   let cpRel = true;
-	//   if (dto.sid) {
-	//     cpRel = await this.ncpAndRm(directory, savePath);
-	//   }
-
-	//   if (rel && cpRel) {
-	//     return this.success(rel);
-	//   }
-
-	//   return this.fail("更新失败");
-	// }
-
-	// /**
-	//  * 组件列表
-	//  */
-	// @Get("/delete")
-	// async del (@Query("id") id: string) {
-	//   const rel = await this.service.delete(id);
-	//   if (rel) {
-	//     // 删除组件目录
-	//     const savePath = `${this.libSavePath}/${rel.name}${rel.version}`;
-	//     rmdir(savePath);
-	//   } else {
-	//     return this.fail("删除失败");
-	//   }
-	//   return this.success(null);
-	// }
-
-	// /**
-	//  * 组件详情
-	//  */
-	// @Get("/detail")
-	// async detail (@Query("id") id: string) {
-	//   const rel = await this.service.findById(id);
-	//   return this.success(rel);
-	// }
 }
