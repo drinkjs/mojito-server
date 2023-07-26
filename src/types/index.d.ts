@@ -29,7 +29,7 @@ declare global {
   }
   
   type LayerEvent = {
-    [key: string]: { code: string; isSync: boolean };
+    [key: string]: { sourceCode: string, isSync: boolean, buildCode?:string };
   }
   
   type Layer = {

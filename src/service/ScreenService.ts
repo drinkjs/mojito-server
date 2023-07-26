@@ -49,7 +49,7 @@ export default class ScreenService extends BaseService {
       .find({ deleteAt: null, projectId })
       .sort({ updateTime: -1 })
       .exec();
-    return rel ? this.toObject(rel) : [];
+    return rel ? this.toObjects(rel) : [];
   }
 
   /**

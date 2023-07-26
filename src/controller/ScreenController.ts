@@ -1,3 +1,4 @@
+import ComponentService from "@/service/ComponentService";
 import {
   Body,
   Controller,
@@ -14,7 +15,7 @@ import ScreenService from "../service/ScreenService";
 @Controller("/screen")
 export default class ScreenController extends BaseController {
   // eslint-disable-next-line no-unused-vars
-  constructor (private readonly service: ScreenService) {
+  constructor (private readonly service: ScreenService, private readonly componentService: ComponentService) {
     super();
   }
 
@@ -99,7 +100,12 @@ export default class ScreenController extends BaseController {
    */
   @Get("/detail")
   async detail (@Query("id") id: string) {
-    const rel = await this.service.findDetailById(id);
-    return rel ? this.success(rel) : this.fail("页面不存在");
+    const screenInfo = await this.service.findDetailById(id);
+    let packInfo:any
+    if(screenInfo && screenInfo.layers){
+      const packIds = screenInfo.layers.map(v => v?.component?.packId);
+      packInfo = packIds.length ? await this.componentService.findByIds(packIds) : undefined;
+    }
+    return screenInfo ? this.success({screenInfo, packInfo}) : this.fail("页面不存在");
   }
 }

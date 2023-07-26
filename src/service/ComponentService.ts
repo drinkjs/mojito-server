@@ -18,7 +18,7 @@ export default class ComponentService extends BaseService {
 	 */
 	async findTypes() {
 		const rel = await this.typeModel.find({ deleteAt: null }).exec();
-		return this.toObject(rel);
+		return this.toObjects(rel);
 	}
 
 	/**
@@ -82,7 +82,7 @@ export default class ComponentService extends BaseService {
 		const rel = await this.model
 			.find({ $or: [{ type, userId, deleteAt: null }, { origin: 1, type, deleteAt: null }] })
 			.exec();
-		return rel ? this.toObject(rel) : [];
+		return rel ? this.toObjects(rel) : [];
 	}
 
 	async findByName(name: string, version: string) {
@@ -92,15 +92,14 @@ export default class ComponentService extends BaseService {
 
 	async findById(id: string | string[]) {
 		const rel = typeof id  === "string" ? 
-			await this.model.findOne({ _id: id, deleteAt: null }).exec() :
-			await this.model.find({ _id: id, deleteAt: null }).exec()
-		return this.toObject(rel);
+		this.toObject(await this.model.findOne({ _id: id, deleteAt: null }).exec()) :
+			await this.findByIds(id);
+		return rel;
 	}
 
 	async findByIds(ids: string[]) {
-		const orIds = ids.map((id) => ({ _id: id }));
-		const rel = await this.model.find({ $or: orIds }).exec();
-		return this.toObject(rel) || [];
+		const rel = await this.model.find({ _id: ids, deleteAt: null }).exec();
+		return this.toObjects(rel) || [];
 	}
 
 	/**

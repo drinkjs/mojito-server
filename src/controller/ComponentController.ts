@@ -75,22 +75,6 @@ export default class ComponentController extends BaseController {
 	}
 
 	/**
-	 * 获取mojito-pack.json信息
-	 */
-	@Get("/pack/info")
-	async getPack(@Query("url") packUrl: string) {
-		const res = await fetch(packUrl).catch((err) => {
-			console.log(err);
-			return err.message;
-		});
-		if (res.ok) {
-			const data = await res.json();
-			return this.success(data);
-		}
-		return this.fail(`GET ${packUrl} ${res}`);
-	}
-
-	/**
 	 * 组件库明细
 	 * @param id 
 	 * @returns 

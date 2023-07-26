@@ -41,7 +41,7 @@ export default class ProjectService extends BaseService {
       .find({ userId, deleteAt: null })
       .sort({ createAt: -1 })
       .exec();
-    const val = this.toObject(rel);
+    const val = this.toObjects(rel);
     return val;
   }
 
