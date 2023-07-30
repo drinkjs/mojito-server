@@ -11,7 +11,7 @@ export class ComponentDto {
 
   @IsNotEmpty({ groups: ["add", "update"] })
   @IsUrl()
-  packUrl!: string;
+  packJson!: string;
 
   @IsNotEmpty({ message: "type不能为空", groups: ["add", "update"] })
   @IsMongoId({ message: "非法类型", groups: ["add", "update"] })

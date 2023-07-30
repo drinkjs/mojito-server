@@ -7,7 +7,7 @@ export default class Component {
   name!: string;
 
   @prop({ required: true })
-  packUrl!: string;
+  packJson!: string;
 
   @prop({ required: true })
   version!: string;
