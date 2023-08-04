@@ -21,7 +21,7 @@ export default class ScreenService extends BaseService {
    */
   async add (data: ScreenDto) {
     const rel = await this.model
-      .findOne({ name: data.name, status: 1, projectId: data.projectId })
+      .findOne({ name: data.name, deleteAt: null,  projectId: data.projectId })
       .exec();
     if (rel) {
       AppError.assert("页面已存在");
@@ -74,7 +74,7 @@ export default class ScreenService extends BaseService {
    */
   async update (data: ScreenDto) {
     let rel = await this.model
-      .findOne({ name: data.name, projectId: data.projectId, status: 1 })
+      .findOne({ name: data.name, projectId: data.projectId, deleteAt: null })
       .exec();
     if (rel && rel.id !== data.id) {
       AppError.assert("页面已存在");

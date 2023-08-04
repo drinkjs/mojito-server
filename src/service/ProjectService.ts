@@ -51,7 +51,7 @@ export default class ProjectService extends BaseService {
    */
   async findByName (name: string) {
     const rel = await this.model
-      .findOne({ status: 1, name })
+      .findOne({ deleteAt: null, name })
       .sort({ createAt: -1 })
       .exec();
     return this.toObject(rel);
