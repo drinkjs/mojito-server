@@ -1,3 +1,4 @@
+import { IconFontDto } from "@/dto/IconFontDto";
 import {
 	Body,
 	Controller,
@@ -25,9 +26,9 @@ export default class ComponentController extends BaseController {
 		return this.success(rel);
 	}
 
-/**
- * 用户的组件类型树
- */
+	/**
+	 * 用户的组件类型树
+	 */
 	@Get("/user/types")
 	async getUserTypes(@Headers("x-token") token: string) {
 		const rel = await this.service.findUserTypes(token);
@@ -134,18 +135,57 @@ export default class ComponentController extends BaseController {
 	}
 
 	/**
-	 * 增加组件库
+	 * 更新组件库
 	 * @param dto
 	 */
-	 @Post("/update")
-	 async updateLib(
-		 @Body(new Validation({ groups: ["update"] })) dto: ComponentDto,
-		 @Headers("x-token") token: string
-	 ) {
-		 const rel = await this.service.updateLib(dto, token);
-		 if (rel) {
-			 return this.success(null);
-		 }
-		 return this.fail("更新失败");
-	 }
+	@Post("/update")
+	async updateLib(
+		@Body(new Validation({ groups: ["update"] })) dto: ComponentDto,
+		@Headers("x-token") token: string
+	) {
+		const rel = await this.service.updateLib(dto, token);
+		if (rel) {
+			return this.success(null);
+		}
+		return this.fail("更新失败");
+	}
+
+	/**
+	* 获取iconfont
+	* @param token
+	*/
+	@Get("/iconfont")
+	async getIconFont(
+		@Headers("x-token") token: string
+	) {
+		const rel = await this.service.getIconFont(token);
+		return this.success(rel);
+	}
+
+	/**
+	* add iconfont
+	* @param token
+	*/
+	@Post("/iconfont/add")
+	async addIconFont(
+		@Body(new Validation({ groups: ["add"] })) dto: IconFontDto,
+		@Headers("x-token") token: string
+	) {
+		const rel = await this.service.addIconFont(dto, token);
+		return this.success(rel);
+	}
+
+	/**
+	* update iconfont
+	* @param token
+	*/
+	@Post("/iconfont/update")
+	async updateIconFont(
+		@Body(new Validation({ groups: ["update"] })) dto: IconFontDto,
+		@Headers("x-token") token: string
+	) {
+		const rel = await this.service.updateIconFont(dto, token);
+		console.log(rel);
+		return this.success(true);
+	}
 }

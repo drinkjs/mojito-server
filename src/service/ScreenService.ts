@@ -48,7 +48,7 @@ export default class ScreenService extends BaseService {
   async findByProject(projectId: string) {
     const rel = await this.model
       .find({ deleteAt: null, projectId })
-      .sort({ updateTime: -1 })
+      .sort({ _id: -1 })
       .exec();
     return rel ? this.toObjects(rel) : [];
   }
@@ -79,8 +79,8 @@ export default class ScreenService extends BaseService {
     if (rel && rel.id !== data.id) {
       AppError.assert("页面已存在");
     }
-    rel = await this.model.findOneAndUpdate(
-      { id: data.id, userId },
+   return await this.model.updateOne(
+      { _id: data.id, userId },
       {
         name: data.name,
         style: data.style,
@@ -88,7 +88,6 @@ export default class ScreenService extends BaseService {
       },
       { omitUndefined: true }
     );
-    return rel;
   }
 
   /**
@@ -100,8 +99,8 @@ export default class ScreenService extends BaseService {
     const updateData: any = data;
     delete updateData.createAt;
     delete updateData.projectId;
-    const rel = await this.model.findOneAndUpdate(
-      { id: updateData.id, userId },
+    const rel = await this.model.updateOne(
+      { _id: updateData.id, userId },
       {
         ...updateData,
         updateAt: new Date,
@@ -117,7 +116,7 @@ export default class ScreenService extends BaseService {
    * @param imgPath
    */
   async updateCover(id: string, userId: string, imgPath: string) {
-    const rel = await this.model.findByIdAndUpdate({ id, userId }, {
+    const rel = await this.model.updateOne({ _id: id, userId }, {
       coverImg: imgPath,
     });
     return rel;
@@ -128,7 +127,7 @@ export default class ScreenService extends BaseService {
    * @param id
    */
   async delete(id: string, userId: string) {
-    const rel = await this.model.findOneAndUpdate({ id, userId }, { deleteAt: new Date });
+    const rel = await this.model.updateOne({ _id: id, userId }, { deleteAt: new Date });
     return rel;
   }
 }

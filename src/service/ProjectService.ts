@@ -2,7 +2,6 @@
 import { Injectable, MgModel, MgModelType, AppError } from "ngulf";
 import { ProjectDto } from "../dto";
 import ProjectEntity from "../entity/ProjectEntity";
-import { createStringDate } from "../common/utils";
 import BaseService from "./BaseService";
 
 @Injectable()
@@ -39,7 +38,7 @@ export default class ProjectService extends BaseService {
   async findAll(userId: string) {
     const rel = await this.model
       .find({ userId, deleteAt: null })
-      .sort({ createAt: -1 })
+      .sort({ _id: -1 })
       .exec();
     const val = this.toObjects(rel);
     return val;
@@ -50,17 +49,16 @@ export default class ProjectService extends BaseService {
    * @param data
    */
   async update(data: ProjectDto, userId: string) {
-    let rel = await this.model.findOne({ name: data.name, userId, deleteAt: null }).exec();
+    const rel = await this.model.findOne({ name: data.name, userId, deleteAt: null }).exec();
     if (rel && rel.id !== data.id) {
       AppError.assert("项目已存在");
     }
 
-    rel = await this.model.findByIdAndUpdate(
-      data.id,
+    return await this.model.updateOne(
+      { _id: data.id },
       { name: data.name, updateAt: new Date },
       { omitUndefined: true }
     );
-    return rel;
   }
 
   /**
@@ -68,7 +66,7 @@ export default class ProjectService extends BaseService {
    * @param id
    */
   async delete(id: string) {
-    const rel = await this.model.findByIdAndUpdate(id, { deleteAt: new Date });
+    const rel = await this.model.updateOne({ _id: id }, { deleteAt: new Date });
     return rel;
   }
 }

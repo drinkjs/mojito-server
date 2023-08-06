@@ -4,6 +4,7 @@ import ComponentTypeEntity from "../entity/ComponentTypeEntity";
 import ComponentEntity from "../entity/ComponentEntity";
 import { ComponentDto, ComponentTypeDto } from "../dto";
 import BaseService from "./BaseService";
+import IconFontEntity from "@/entity/IconFontEntity";
 
 @Injectable()
 export default class ComponentService extends BaseService {
@@ -13,11 +14,14 @@ export default class ComponentService extends BaseService {
 	@MgModel(ComponentEntity)
 	private model!: MgModelType<ComponentEntity>;
 
+	@MgModel(IconFontEntity)
+	private iconModel!: MgModelType<IconFontEntity>;
+
 	/**
 	 * 查询所有分类
 	 */
 	async findTypes(userId: string) {
-		const rel = await this.typeModel.find({ $or: [{ userId }, { origin: 999 }] }).exec();
+		const rel = await this.typeModel.find({ $or: [{ userId }, { origin: 999 }] }).sort({ _id: -1 }).exec();
 		return this.toObjects(rel);
 	}
 
@@ -53,7 +57,7 @@ export default class ComponentService extends BaseService {
 	 * @returns
 	 */
 	async delType(id: string, userId: string) {
-		let rel = await this.typeModel.findOne({ pid: id, userId }).exec();
+		const rel = await this.typeModel.findOne({ pid: id, userId }).exec();
 		// 如果存在子类不能删除
 		if (rel) {
 			AppError.assert("当前分类下下存在多个子类，请先删除子类");
@@ -62,7 +66,7 @@ export default class ComponentService extends BaseService {
 		if (comp) {
 			AppError.assert("当前分类下存在多个组件，请先迁移组件");
 		}
-		return await this.typeModel.remove({ id, userId });
+		return await this.typeModel.deleteOne({ _id: id, userId });
 	}
 
 	/**
@@ -71,7 +75,7 @@ export default class ComponentService extends BaseService {
 	 * @returns
 	 */
 	async updateType(data: ComponentTypeDto, userId: string) {
-		let rel = await this.typeModel
+		const rel = await this.typeModel
 			.findOne({ $or: [{ name: data.name, pid: data.pid, userId }, { origin: 999, name: data.name, pid: data.pid }] })
 			.exec();
 
@@ -79,8 +83,8 @@ export default class ComponentService extends BaseService {
 			AppError.assert(`${data.name}已经存在`);
 		}
 
-		rel = await this.typeModel.findOneAndUpdate(
-			{ id: data.id, userId },
+		return await this.typeModel.updateOne(
+			{ _id: data.id, userId },
 			{
 				name: data.name,
 				icon: data.icon,
@@ -89,7 +93,6 @@ export default class ComponentService extends BaseService {
 			},
 			{ omitUndefined: true }
 		);
-		return rel?._id
 	}
 
 	/**
@@ -173,7 +176,7 @@ export default class ComponentService extends BaseService {
 	 * @returns 
 	 */
 	async deleteLib(id: string, userId: string) {
-		return await this.model.findOneAndUpdate({ _id: id, userId }, { deleteAt: new Date() });
+		return await this.model.updateOne({ _id: id, userId }, { deleteAt: new Date() });
 	}
 
 	/**
@@ -198,9 +201,34 @@ export default class ComponentService extends BaseService {
 				},
 			]
 		});
-		if(curr && curr.id !== data.id){
+		if (curr && curr.id !== data.id) {
 			AppError.assert(`${curr.name}@${curr.version} 已经存在`);
 		}
-		return await this.model.findOneAndUpdate({ _id: data.id, userId }, { ...data, updateAt: new Date(), origin: 1 }, { omitUndefined: true });
+		return await this.model.updateOne({ _id: data.id, userId }, { ...data, updateAt: new Date(), origin: 1 }, { omitUndefined: true });
+	}
+
+	async getIconFont(userId: string) {
+		const rel = await this.iconModel.findOne({ userId });
+		return this.toObject(rel);
+	}
+
+	async addIconFont(data: { url: string, type?: string }, userId: string) {
+		const { _id: id } = await this.iconModel.create({
+			url: data.url,
+			type: data.type,
+			userId
+		});
+		return id;
+	}
+
+	async updateIconFont(data: { url?: string, type?: string, id: string }, userId: string) {
+		if (data.url) {
+			return await this.iconModel.updateOne({ _id: data.id, userId }, {
+				url: data.url,
+				type: data.type,
+			});
+		} else {
+			return await this.iconModel.deleteOne({ _id: data.id, userId })
+		}
 	}
 }
