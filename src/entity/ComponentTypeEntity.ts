@@ -19,4 +19,10 @@ export default class ComponentType {
 
   @prop({ select: false, default: null })
   deleteAt?: Date;
+
+  @prop({ select: false })
+  userId!: string;
+
+  @prop({ default: 1, type: Number })
+  origin!: 1 | 999; // 来源:999系统， 1用户
 }

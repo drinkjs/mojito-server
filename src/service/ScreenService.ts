@@ -7,7 +7,7 @@ import BaseService from "./BaseService";
 
 @Injectable()
 export default class ScreenService extends BaseService {
-  constructor (
+  constructor(
   ) {
     super();
   }
@@ -19,15 +19,16 @@ export default class ScreenService extends BaseService {
    * 新增页面
    * @param data
    */
-  async add (data: ScreenDto) {
+  async add(data: ScreenDto, userId: string) {
     const rel = await this.model
-      .findOne({ name: data.name, deleteAt: null,  projectId: data.projectId })
+      .findOne({ name: data.name, deleteAt: null, projectId: data.projectId })
       .exec();
     if (rel) {
       AppError.assert("页面已存在");
     }
 
     const view: ScreenEntity = {
+      userId,
       projectId: data.projectId,
       name: data.name,
       style: data.style,
@@ -44,7 +45,7 @@ export default class ScreenService extends BaseService {
   /**
    * 查询项目下的所有页面
    */
-  async findByProject (projectId: string) {
+  async findByProject(projectId: string) {
     const rel = await this.model
       .find({ deleteAt: null, projectId })
       .sort({ updateTime: -1 })
@@ -57,12 +58,11 @@ export default class ScreenService extends BaseService {
    * @param id
    * @returns
    */
-  async findDetailById (id: string) {
+  async findDetailById(id: string, userId?: string) {
     if (!id || !mongoose.Types.ObjectId.isValid(id)) return null;
 
     const rel = await this.model
-      .findOne({ _id: id, deleteAt: null }, { coverImg: 0 })
-      .populate({ path: "projectId", select: "name" })
+      .findOne({ _id: id, deleteAt: null, userId }, { coverImg: 0 })
       .exec();
     if (!rel) return null;
     return this.toObject(rel);
@@ -72,19 +72,19 @@ export default class ScreenService extends BaseService {
    * 更新页面信息
    * @param data
    */
-  async update (data: ScreenDto) {
+  async update(data: ScreenDto, userId: string) {
     let rel = await this.model
       .findOne({ name: data.name, projectId: data.projectId, deleteAt: null })
       .exec();
     if (rel && rel.id !== data.id) {
       AppError.assert("页面已存在");
     }
-    rel = await this.model.findByIdAndUpdate(
-      data.id,
+    rel = await this.model.findOneAndUpdate(
+      { id: data.id, userId },
       {
         name: data.name,
         style: data.style,
-        updateTime: createStringDate(),
+        updateAt: new Date,
       },
       { omitUndefined: true }
     );
@@ -96,14 +96,14 @@ export default class ScreenService extends BaseService {
    * @param data
    * @returns
    */
-  async updateScreen (data: ScreenDto) {
-    const updateData:any = data;
+  async updateScreen(data: ScreenDto, userId: string) {
+    const updateData: any = data;
     delete updateData.createAt;
     delete updateData.projectId;
-    const rel = await this.model.findByIdAndUpdate(
-      updateData.id,
+    const rel = await this.model.findOneAndUpdate(
+      { id: updateData.id, userId },
       {
-       ...updateData,
+        ...updateData,
         updateAt: new Date,
       },
       { omitUndefined: true }
@@ -116,8 +116,8 @@ export default class ScreenService extends BaseService {
    * @param id
    * @param imgPath
    */
-  async updateCover (id: string, imgPath: string) {
-    const rel = await this.model.findByIdAndUpdate(id, {
+  async updateCover(id: string, userId: string, imgPath: string) {
+    const rel = await this.model.findByIdAndUpdate({ id, userId }, {
       coverImg: imgPath,
     });
     return rel;
@@ -127,8 +127,8 @@ export default class ScreenService extends BaseService {
    * 删除页面
    * @param id
    */
-  async delete (id: string) {
-    const rel = await this.model.findByIdAndUpdate(id, { deleteAt: new Date });
+  async delete(id: string, userId: string) {
+    const rel = await this.model.findOneAndUpdate({ id, userId }, { deleteAt: new Date });
     return rel;
   }
 }

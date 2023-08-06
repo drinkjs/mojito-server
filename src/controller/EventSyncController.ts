@@ -11,10 +11,6 @@ import {
 	BaseController,
 	WsMessage,
 } from "ngulf";
-// import WebsocketEmitter, {
-//   WebsocketEvent,
-//   WsClient,
-// } from "../core/WebsocketEmitter";
 
 interface JoinPage {
 	pageId: string;
@@ -31,7 +27,7 @@ interface SyncPageMsg {
 }
 
 @Controller("/ws")
-export default class ScreenSyncController extends BaseController {
+export default class EventSyncController extends BaseController {
 	@WebSocketServer()
 	private wss!: WebsocketEmitter;
 

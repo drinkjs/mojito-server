@@ -28,7 +28,10 @@ export class ComponentDto {
 
   updateAt?: string;
 
-  origin!: 1 | 2; // 来源:1系统2第三方
+  /**
+   * 999：系统，1：用户
+   */
+  origin!: 1 | 999;
 
   @IsNotEmpty({ message: "components不能为空", groups: ["add", "update"] })
   @IsArray()

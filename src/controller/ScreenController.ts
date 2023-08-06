@@ -24,8 +24,8 @@ export default class ScreenController extends BaseController {
    * @param dto
    */
   @Post("/add")
-  async add (@Body(new Validation({ groups: ["add"] })) dto: ScreenDto) {
-    const relId = await this.service.add(dto);
+  async add (@Body(new Validation({ groups: ["add"] })) dto: ScreenDto, @Headers("x-token") token: string) {
+    const relId = await this.service.add(dto, token);
     if (relId) return this.success(relId);
     return this.fail("添加失败");
   }
@@ -45,12 +45,11 @@ export default class ScreenController extends BaseController {
    * @param dto
    */
   @Post("/update")
-  async update (@Body(new Validation({ groups: ["update"] })) dto: ScreenDto) {
-    dto.name = dto.name.replace("/", "");
+  async update (@Body(new Validation({ groups: ["update"] })) dto: ScreenDto, @Headers("x-token") token: string) {
     if (!dto.name) {
       return this.fail("更新失败");
     }
-    const rel = await this.service.update(dto);
+    const rel = await this.service.update(dto, token);
     if (rel) return this.success(null);
     return this.fail("更新失败");
   }
@@ -61,9 +60,10 @@ export default class ScreenController extends BaseController {
    */
   @Post("/update/layer")
   async updateLayer (
-    @Body(new Validation({ groups: ["updateLayer"] })) dto: ScreenDto
+    @Body(new Validation({ groups: ["updateLayer"] })) dto: ScreenDto,
+    @Headers("x-token") token: string
   ) {
-    const rel = await this.service.updateScreen(dto);
+    const rel = await this.service.updateScreen(dto, token);
     if (rel) return this.success(null);
     return this.fail("图层更新失败");
   }
@@ -74,9 +74,10 @@ export default class ScreenController extends BaseController {
    */
   @Post("/update/cover")
   async updateCover (
-    @Body(new Validation({ groups: ["coverImg"] })) dto: ScreenDto
+    @Body(new Validation({ groups: ["coverImg"] })) dto: ScreenDto,
+    @Headers("x-token") token: string
   ) {
-    const rel = await this.service.updateCover(dto.id, dto.coverImg!);
+    const rel = await this.service.updateCover(dto.id, token, dto.coverImg!);
     if (rel) return this.success(null);
     return this.fail("更新失败");
   }
@@ -86,8 +87,8 @@ export default class ScreenController extends BaseController {
    * @param id
    */
   @Get("/delete")
-  async delete (@Query("id") id: string) {
-    const rel = await this.service.delete(id);
+  async delete (@Query("id") id: string, @Headers("x-token") token: string) {
+    const rel = await this.service.delete(id, token);
     if (rel) {
       return this.success(null);
     }
@@ -98,9 +99,9 @@ export default class ScreenController extends BaseController {
    * 页面明细
    * @param id 大屏id
    */
-  @Get("/detail")
-  async detail (@Query("id") id: string) {
-    const screenInfo = await this.service.findDetailById(id);
+  @Get("/editor/detail")
+  async detail (@Query("id") id: string, @Headers("x-token") token: string) {
+    const screenInfo = await this.service.findDetailById(id, token);
     let packInfo:any
     if(screenInfo && screenInfo.layers){
       const packIds = screenInfo.layers.map(v => v?.component?.packId);

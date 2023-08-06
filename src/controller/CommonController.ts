@@ -11,7 +11,7 @@ export default class CommonController extends BaseController {
 
   /**
    * 上传图片
-   * @param file
+   * @param ctx
    */
   @Post("/upload/image")
   async uploadImage (ctx: RouterContext) {

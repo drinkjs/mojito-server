@@ -14,7 +14,7 @@ export default class ProjectService extends BaseService {
    * 新增项目
    * @param data
    */
-  async add ({userId, name}: ProjectDto) {
+  async add({ userId, name }: ProjectDto) {
     const rel = await this.model.findOne({ userId, name, deleteAt: null }).exec();
     if (rel) {
       AppError.assert("项目已存在");
@@ -36,7 +36,7 @@ export default class ProjectService extends BaseService {
   /**
    * 查询所有项目
    */
-  async findAll (userId:string) {
+  async findAll(userId: string) {
     const rel = await this.model
       .find({ userId, deleteAt: null })
       .sort({ createAt: -1 })
@@ -46,22 +46,10 @@ export default class ProjectService extends BaseService {
   }
 
   /**
-   * 根据项目名返回项目信息
-   * @param name
-   */
-  async findByName (name: string) {
-    const rel = await this.model
-      .findOne({ deleteAt: null, name })
-      .sort({ createAt: -1 })
-      .exec();
-    return this.toObject(rel);
-  }
-
-  /**
    * 更新项目
    * @param data
    */
-  async update (data: ProjectDto, userId:string) {
+  async update(data: ProjectDto, userId: string) {
     let rel = await this.model.findOne({ name: data.name, userId, deleteAt: null }).exec();
     if (rel && rel.id !== data.id) {
       AppError.assert("项目已存在");
@@ -69,7 +57,7 @@ export default class ProjectService extends BaseService {
 
     rel = await this.model.findByIdAndUpdate(
       data.id,
-      { name: data.name, updateAt: new Date  },
+      { name: data.name, updateAt: new Date },
       { omitUndefined: true }
     );
     return rel;
@@ -79,7 +67,7 @@ export default class ProjectService extends BaseService {
    * 删除项目
    * @param id
    */
-  async delete (id: string) {
+  async delete(id: string) {
     const rel = await this.model.findByIdAndUpdate(id, { deleteAt: new Date });
     return rel;
   }

@@ -26,4 +26,7 @@ export default class Screen {
 
   @prop({ select: false, default: null })
   deleteAt?: Date;
+
+  @prop({ select: false })
+  userId!: string;
 }

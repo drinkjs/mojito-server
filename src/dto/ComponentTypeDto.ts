@@ -15,7 +15,7 @@ export class ComponentTypeDto {
   name!: string;
 
   @IsOptional({ groups: ["add", "update"] })
-  @MaxLength(100, { groups: ["add", "update"] })
+  @MaxLength(255, { groups: ["add", "update"] })
   icon?: string;
 
   @IsOptional({ groups: ["add", "update"] })

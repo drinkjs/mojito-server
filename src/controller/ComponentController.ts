@@ -6,7 +6,7 @@ import {
 	Query,
 	Validation,
 	BaseController,
-  Headers
+	Headers
 } from "ngulf";
 import { ComponentDto, ComponentTypeDto } from "../dto";
 import ComponentService from "../service/ComponentService";
@@ -20,8 +20,17 @@ export default class ComponentController extends BaseController {
 	 * 组件类型树
 	 */
 	@Get("/types")
-	async getTypes() {
-		const rel = await this.service.findTypes();
+	async getTypes(@Headers("x-token") token: string) {
+		const rel = await this.service.findTypes(token);
+		return this.success(rel);
+	}
+
+/**
+ * 用户的组件类型树
+ */
+	@Get("/user/types")
+	async getUserTypes(@Headers("x-token") token: string) {
+		const rel = await this.service.findUserTypes(token);
 		return this.success(rel);
 	}
 
@@ -30,9 +39,10 @@ export default class ComponentController extends BaseController {
 	 */
 	@Post("/type/add")
 	async addType(
-		@Body(new Validation({ groups: ["add"] })) dto: ComponentTypeDto
+		@Body(new Validation({ groups: ["add"] })) dto: ComponentTypeDto,
+		@Headers("x-token") token: string
 	) {
-		const rel = await this.service.addType(dto);
+		const rel = await this.service.addType(dto, token);
 		if (rel) {
 			return this.success(rel);
 		}
@@ -40,13 +50,14 @@ export default class ComponentController extends BaseController {
 	}
 
 	/**
-	 * 添加组件类型
+	 * 更新组件类型
 	 */
 	@Post("/type/update")
 	async updateType(
-		@Body(new Validation({ groups: ["update"] })) dto: ComponentTypeDto
+		@Body(new Validation({ groups: ["update"] })) dto: ComponentTypeDto,
+		@Headers("x-token") token: string
 	) {
-		const rel = await this.service.updateType(dto);
+		const rel = await this.service.updateType(dto, token);
 		if (rel) {
 			return this.success(rel);
 		}
@@ -57,20 +68,41 @@ export default class ComponentController extends BaseController {
 	 * 添加组件类型
 	 */
 	@Get("/type/delete")
-	async delType(@Query("id") id: string) {
-		const rel = await this.service.delType(id);
-		if (rel) {
-			return this.success(null);
-		}
-		return this.fail("删除失败");
+	async delType(@Query("id") id: string, @Headers("x-token") token: string) {
+		await this.service.delType(id, token);
+		return this.success(null);
 	}
 
 	/**
-	 * 组件列表
+	 * 系统及用户组件库
 	 */
 	@Get("/list")
-	async list(@Query("type") type:string, @Headers("x-token") token:string) {
-		const rel = await this.service.findAll(type, token);
+	async list(@Query("type") type: string, @Headers("x-token") token: string) {
+		const rel = await this.service.findAllLibs(type, token);
+		return this.success(rel);
+	}
+
+	/**
+	 * 用户组件库
+	 * @param type 
+	 * @param token 
+	 * @returns 
+	 */
+	@Get("/libs")
+	async libs(@Query("type") type: string, @Headers("x-token") token: string) {
+		const rel = await this.service.findUserLibs(type, token);
+		return this.success(rel);
+	}
+
+	/**
+	 * 删除组件库
+	 * @param id 
+	 * @param token 
+	 * @returns 
+	 */
+	@Get("/lib/delete")
+	async libDelete(@Query("id") id: string, @Headers("x-token") token: string) {
+		const rel = await this.service.deleteLib(id, token);
 		return this.success(rel);
 	}
 
@@ -80,24 +112,40 @@ export default class ComponentController extends BaseController {
 	 * @returns 
 	 */
 	@Post("/pack/detail")
-	async getPackScript(@Body("id") id: string | string[]) {
-		const rel = await this.service.findById(id);
+	async getPackScript(@Body("id") id: string | string[], @Headers("x-token") token: string) {
+		const rel = await this.service.findById(id, token);
 		return this.success(rel);
 	}
 
 	/**
-	 * 增加三方组件
+	 * 增加组件库
 	 * @param dto
 	 */
 	@Post("/add")
-	async addComponent (
-	  @Body(new Validation({ groups: ["add"] })) dto: ComponentDto,
-    @Headers("x-token") token:string
+	async addLib(
+		@Body(new Validation({ groups: ["add"] })) dto: ComponentDto,
+		@Headers("x-token") token: string
 	) {
-	  const rel = await this.service.add(dto, token);
-    if(rel){
-      return this.success(null);
-    }
-	  return this.fail("添加失败");
+		const rel = await this.service.addLib(dto, token);
+		if (rel) {
+			return this.success(null);
+		}
+		return this.fail("添加失败");
 	}
+
+	/**
+	 * 增加组件库
+	 * @param dto
+	 */
+	 @Post("/update")
+	 async updateLib(
+		 @Body(new Validation({ groups: ["update"] })) dto: ComponentDto,
+		 @Headers("x-token") token: string
+	 ) {
+		 const rel = await this.service.updateLib(dto, token);
+		 if (rel) {
+			 return this.success(null);
+		 }
+		 return this.fail("更新失败");
+	 }
 }

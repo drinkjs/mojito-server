@@ -33,8 +33,8 @@ export default class Component {
   @prop({ required: true, select: false })
   userId!: string;
 
-  @prop({ default: 2, type: Number, select: false })
-  origin!: 1 | 2; // 来源:1系统2第三方
+  @prop({ default: 1, type: Number })
+  origin!: 1 | 999; // 来源:999系统， 1用户
 
   @prop()
   external?:Record<string, string>
