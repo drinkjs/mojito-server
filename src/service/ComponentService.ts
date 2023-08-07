@@ -21,7 +21,7 @@ export default class ComponentService extends BaseService {
 	 * 查询所有分类
 	 */
 	async findTypes(userId: string) {
-		const rel = await this.typeModel.find({ $or: [{ userId }, { origin: 999 }] }).sort({ _id: -1 }).exec();
+		const rel = await this.typeModel.find({ $or: [{ userId }, { origin: 999 }] }).sort({ _id: 1 }).exec();
 		return this.toObjects(rel);
 	}
 
@@ -101,7 +101,7 @@ export default class ComponentService extends BaseService {
 	 */
 	async findAllLibs(type: string, userId: string) {
 		const rel = await this.model
-			.find({ $or: [{ type, userId, deleteAt: null }, { origin: 999, type, deleteAt: null }] })
+			.find({ $or: [{ type, userId, deleteAt: null }, { origin: 999, type, deleteAt: null }] }).sort({_id: -1})
 			.exec();
 		return rel ? this.toObjects(rel) : [];
 	}
@@ -114,7 +114,7 @@ export default class ComponentService extends BaseService {
 	 */
 	async findUserLibs(type: string, userId: string) {
 		const rel = await this.model
-			.find({ type, userId, deleteAt: null })
+			.find({ type, userId, deleteAt: null }).sort({_id: -1})
 			.exec();
 		return rel ? this.toObjects(rel) : [];
 	}

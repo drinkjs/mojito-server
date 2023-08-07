@@ -109,4 +109,15 @@ export default class ScreenController extends BaseController {
     }
     return screenInfo ? this.success({screenInfo, packInfo}) : this.fail("页面不存在");
   }
+
+  @Get("/viewer/detail")
+  async viewDetail (@Query("id") id: string) {
+    const screenInfo = await this.service.findDetailById(id);
+    let packInfo:any
+    if(screenInfo && screenInfo.layers){
+      const packIds = screenInfo.layers.map(v => v?.component?.packId);
+      packInfo = packIds.length ? await this.componentService.findByIds(packIds) : undefined;
+    }
+    return screenInfo ? this.success({screenInfo, packInfo}) : this.fail("页面不存在");
+  }
 }

@@ -61,8 +61,13 @@ export default class ScreenService extends BaseService {
   async findDetailById(id: string, userId?: string) {
     if (!id || !mongoose.Types.ObjectId.isValid(id)) return null;
 
+    const filter:any = { _id: id, deleteAt: null }
+    if(userId){
+      filter.userId = userId;
+    }
+
     const rel = await this.model
-      .findOne({ _id: id, deleteAt: null, userId }, { coverImg: 0 })
+      .findOne(filter, { coverImg: 0 })
       .exec();
     if (!rel) return null;
     return this.toObject(rel);
@@ -104,6 +109,9 @@ export default class ScreenService extends BaseService {
       {
         ...updateData,
         updateAt: new Date,
+        _id: undefined,
+        userId: undefined,
+        projectId: undefined
       },
       { omitUndefined: true }
     );
