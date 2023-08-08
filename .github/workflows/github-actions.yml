@@ -1,7 +1,6 @@
 name: test_workflow
 
-on:
-  push: workflow_dispatch
+on: workflow_dispatch
 
 jobs:
   mojito_server_test:
