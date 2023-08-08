@@ -1,7 +1,21 @@
-- name: test_workflow
-  uses: ${{ secrets.USER_NAME }}/github-action-ssh@release
-  with:
-    command: ls -a
-    host: ${{ secrets.HOST }}
-    username: ${{ secrets.USER_NAME }}
-    privateKey: ${{ secrets.PUBKEY }}
+name: test_workflow
+
+on:
+  push: workflow_dispatch
+
+jobs:
+  mojito_server_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: login ssh
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.HOST }}
+          port: ${{ secrets.PORT }}
+          username: ${{ secrets.USER_NAME }}
+          key: ${{ secrets.PRIVATE_KEY}}
+          script_stop: true
+          script: |
+            cd /var/local
+            ls -a
