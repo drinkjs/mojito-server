@@ -1,7 +1,6 @@
 import { mongoose } from "@typegoose/typegoose";
 import { Injectable, MgModel, MgModelType, AppError } from "ngulf";
-import { DatasourceDto, ScreenDto } from "../dto";
-import { createStringDate } from "../common/utils";
+import { ScreenDto } from "../dto";
 import ScreenEntity from "../entity/ScreenEntity";
 import BaseService from "./BaseService";
 

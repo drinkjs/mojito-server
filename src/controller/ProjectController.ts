@@ -1,3 +1,4 @@
+import { UserHeader } from "@/config";
 import {
   Controller,
   Get,
@@ -23,9 +24,8 @@ export default class ProjectController extends BaseController {
    * @param dto
    */
   @Post("/add")
-  async add (@Body(new Validation({ groups: ["add"] })) dto: ProjectDto, @Headers("x-token") token:string) {
-    // TODO 实现用户系统
-    dto.userId = token;
+  async add (@Body(new Validation({ groups: ["add"] })) dto: ProjectDto, @Headers(UserHeader) userId:string) {
+    dto.userId = userId;
     const relId = await this.service.add(dto);
     if (relId) return this.success(relId);
     return this.fail("添加失败");
@@ -36,8 +36,8 @@ export default class ProjectController extends BaseController {
    * @param dto
    */
   @Post("/update")
-  async update (@Body(new Validation({ groups: ["update"] })) dto: ProjectDto, @Headers("x-token") token:string) {
-    const rel = await this.service.update(dto, token);
+  async update (@Body(new Validation({ groups: ["update"] })) dto: ProjectDto, @Headers(UserHeader) userId:string) {
+    const rel = await this.service.update(dto, userId);
     if (rel) return this.success(null);
     return this.fail("更新失败");
   }
@@ -46,8 +46,8 @@ export default class ProjectController extends BaseController {
    * 项目列表
    */
   @Get("/list")
-  async list (@Headers("x-token") token:string) {
-    const rel = await this.service.findAll(token);
+  async list (@Headers(UserHeader) userId:string) {
+    const rel = await this.service.findAll(userId);
     return this.success(rel);
   }
 

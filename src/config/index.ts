@@ -7,6 +7,8 @@ dotenv.config({ path: `./.env.${process.env.NODE_ENV}` });
 const staticPath = process.env.STATIC_PATH || `${process.cwd()}/public`;
 console.info(staticPath.bgBlue);
 
+export const UserHeader = "mojito-user";
+
 export type IConfig = {
   staticPath:string,
   staticPrefix:string,

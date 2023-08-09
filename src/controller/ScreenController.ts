@@ -1,3 +1,4 @@
+import { UserHeader } from "@/config";
 import ComponentService from "@/service/ComponentService";
 import {
   Body,
@@ -9,7 +10,7 @@ import {
   BaseController,
   Headers
 } from "ngulf";
-import { DatasourceDto, ScreenDto } from "../dto";
+import { ScreenDto } from "../dto";
 import ScreenService from "../service/ScreenService";
 
 @Controller("/screen")
@@ -24,8 +25,8 @@ export default class ScreenController extends BaseController {
    * @param dto
    */
   @Post("/add")
-  async add (@Body(new Validation({ groups: ["add"] })) dto: ScreenDto, @Headers("x-token") token: string) {
-    const relId = await this.service.add(dto, token);
+  async add (@Body(new Validation({ groups: ["add"] })) dto: ScreenDto, @Headers(UserHeader) userId: string) {
+    const relId = await this.service.add(dto, userId);
     if (relId) return this.success(relId);
     return this.fail("添加失败");
   }
@@ -45,11 +46,11 @@ export default class ScreenController extends BaseController {
    * @param dto
    */
   @Post("/update")
-  async update (@Body(new Validation({ groups: ["update"] })) dto: ScreenDto, @Headers("x-token") token: string) {
+  async update (@Body(new Validation({ groups: ["update"] })) dto: ScreenDto, @Headers(UserHeader) userId: string) {
     if (!dto.name) {
       return this.fail("更新失败");
     }
-    const rel = await this.service.update(dto, token);
+    const rel = await this.service.update(dto, userId);
     if (rel) return this.success(null);
     return this.fail("更新失败");
   }
@@ -61,9 +62,9 @@ export default class ScreenController extends BaseController {
   @Post("/update/layer")
   async updateLayer (
     @Body(new Validation({ groups: ["updateLayer"] })) dto: ScreenDto,
-    @Headers("x-token") token: string
+    @Headers(UserHeader) userId: string
   ) {
-    const rel = await this.service.updateScreen(dto, token);
+    const rel = await this.service.updateScreen(dto, userId);
     if (rel) return this.success(null);
     return this.fail("图层更新失败");
   }
@@ -75,9 +76,9 @@ export default class ScreenController extends BaseController {
   @Post("/update/cover")
   async updateCover (
     @Body(new Validation({ groups: ["coverImg"] })) dto: ScreenDto,
-    @Headers("x-token") token: string
+    @Headers(UserHeader) userId: string
   ) {
-    const rel = await this.service.updateCover(dto.id, token, dto.coverImg!);
+    const rel = await this.service.updateCover(dto.id, userId, dto.coverImg!);
     if (rel) return this.success(null);
     return this.fail("更新失败");
   }
@@ -87,8 +88,8 @@ export default class ScreenController extends BaseController {
    * @param id
    */
   @Get("/delete")
-  async delete (@Query("id") id: string, @Headers("x-token") token: string) {
-    const rel = await this.service.delete(id, token);
+  async delete (@Query("id") id: string, @Headers(UserHeader) userId: string) {
+    const rel = await this.service.delete(id, userId);
     if (rel) {
       return this.success(null);
     }
@@ -100,8 +101,8 @@ export default class ScreenController extends BaseController {
    * @param id 大屏id
    */
   @Get("/editor/detail")
-  async detail (@Query("id") id: string, @Headers("x-token") token: string) {
-    const screenInfo = await this.service.findDetailById(id, token);
+  async detail (@Query("id") id: string, @Headers(UserHeader) userId: string) {
+    const screenInfo = await this.service.findDetailById(id, userId);
     let packInfo:any
     if(screenInfo && screenInfo.layers){
       const packIds = screenInfo.layers.map(v => v?.component?.packId);

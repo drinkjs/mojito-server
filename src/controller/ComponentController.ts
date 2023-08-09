@@ -1,3 +1,4 @@
+import { UserHeader } from "@/config";
 import { IconFontDto } from "@/dto/IconFontDto";
 import {
 	Body,
@@ -21,8 +22,8 @@ export default class ComponentController extends BaseController {
 	 * 组件类型树
 	 */
 	@Get("/types")
-	async getTypes(@Headers("x-token") token: string) {
-		const rel = await this.service.findTypes(token);
+	async getTypes(@Headers(UserHeader) userId: string) {
+		const rel = await this.service.findTypes(userId);
 		return this.success(rel);
 	}
 
@@ -30,8 +31,8 @@ export default class ComponentController extends BaseController {
 	 * 用户的组件类型树
 	 */
 	@Get("/user/types")
-	async getUserTypes(@Headers("x-token") token: string) {
-		const rel = await this.service.findUserTypes(token);
+	async getUserTypes(@Headers(UserHeader) userId: string) {
+		const rel = await this.service.findUserTypes(userId);
 		return this.success(rel);
 	}
 
@@ -41,9 +42,9 @@ export default class ComponentController extends BaseController {
 	@Post("/type/add")
 	async addType(
 		@Body(new Validation({ groups: ["add"] })) dto: ComponentTypeDto,
-		@Headers("x-token") token: string
+		@Headers(UserHeader) userId: string
 	) {
-		const rel = await this.service.addType(dto, token);
+		const rel = await this.service.addType(dto, userId);
 		if (rel) {
 			return this.success(rel);
 		}
@@ -56,9 +57,9 @@ export default class ComponentController extends BaseController {
 	@Post("/type/update")
 	async updateType(
 		@Body(new Validation({ groups: ["update"] })) dto: ComponentTypeDto,
-		@Headers("x-token") token: string
+		@Headers(UserHeader) userId: string
 	) {
-		const rel = await this.service.updateType(dto, token);
+		const rel = await this.service.updateType(dto, userId);
 		if (rel) {
 			return this.success(rel);
 		}
@@ -69,8 +70,8 @@ export default class ComponentController extends BaseController {
 	 * 添加组件类型
 	 */
 	@Get("/type/delete")
-	async delType(@Query("id") id: string, @Headers("x-token") token: string) {
-		await this.service.delType(id, token);
+	async delType(@Query("id") id: string, @Headers(UserHeader) userId: string) {
+		await this.service.delType(id, userId);
 		return this.success(null);
 	}
 
@@ -78,32 +79,32 @@ export default class ComponentController extends BaseController {
 	 * 系统及用户组件库
 	 */
 	@Get("/list")
-	async list(@Query("type") type: string, @Headers("x-token") token: string) {
-		const rel = await this.service.findAllLibs(type, token);
+	async list(@Query("type") type: string, @Headers(UserHeader) userId: string) {
+		const rel = await this.service.findAllLibs(type, userId);
 		return this.success(rel);
 	}
 
 	/**
 	 * 用户组件库
 	 * @param type 
-	 * @param token 
+	 * @param userId 
 	 * @returns 
 	 */
 	@Get("/libs")
-	async libs(@Query("type") type: string, @Headers("x-token") token: string) {
-		const rel = await this.service.findUserLibs(type, token);
+	async libs(@Query("type") type: string, @Headers(UserHeader) userId: string) {
+		const rel = await this.service.findUserLibs(type, userId);
 		return this.success(rel);
 	}
 
 	/**
 	 * 删除组件库
 	 * @param id 
-	 * @param token 
+	 * @param userId 
 	 * @returns 
 	 */
 	@Get("/lib/delete")
-	async libDelete(@Query("id") id: string, @Headers("x-token") token: string) {
-		const rel = await this.service.deleteLib(id, token);
+	async libDelete(@Query("id") id: string, @Headers(UserHeader) userId: string) {
+		const rel = await this.service.deleteLib(id, userId);
 		return this.success(rel);
 	}
 
@@ -113,8 +114,8 @@ export default class ComponentController extends BaseController {
 	 * @returns 
 	 */
 	@Post("/pack/detail")
-	async getPackScript(@Body("id") id: string | string[], @Headers("x-token") token: string) {
-		const rel = await this.service.findById(id, token);
+	async getPackScript(@Body("id") id: string | string[], @Headers(UserHeader) userId: string) {
+		const rel = await this.service.findById(id, userId);
 		return this.success(rel);
 	}
 
@@ -125,9 +126,9 @@ export default class ComponentController extends BaseController {
 	@Post("/add")
 	async addLib(
 		@Body(new Validation({ groups: ["add"] })) dto: ComponentDto,
-		@Headers("x-token") token: string
+		@Headers(UserHeader) userId: string
 	) {
-		const rel = await this.service.addLib(dto, token);
+		const rel = await this.service.addLib(dto, userId);
 		if (rel) {
 			return this.success(null);
 		}
@@ -141,9 +142,9 @@ export default class ComponentController extends BaseController {
 	@Post("/update")
 	async updateLib(
 		@Body(new Validation({ groups: ["update"] })) dto: ComponentDto,
-		@Headers("x-token") token: string
+		@Headers(UserHeader) userId: string
 	) {
-		const rel = await this.service.updateLib(dto, token);
+		const rel = await this.service.updateLib(dto, userId);
 		if (rel) {
 			return this.success(null);
 		}
@@ -152,39 +153,39 @@ export default class ComponentController extends BaseController {
 
 	/**
 	* 获取iconfont
-	* @param token
+	* @param userId
 	*/
 	@Get("/iconfont")
 	async getIconFont(
-		@Headers("x-token") token: string
+		@Headers(UserHeader) userId: string
 	) {
-		const rel = await this.service.getIconFont(token);
+		const rel = await this.service.getIconFont(userId);
 		return this.success(rel);
 	}
 
 	/**
 	* add iconfont
-	* @param token
+	* @param userId
 	*/
 	@Post("/iconfont/add")
 	async addIconFont(
 		@Body(new Validation({ groups: ["add"] })) dto: IconFontDto,
-		@Headers("x-token") token: string
+		@Headers(UserHeader) userId: string
 	) {
-		const rel = await this.service.addIconFont(dto, token);
+		const rel = await this.service.addIconFont(dto, userId);
 		return this.success(rel);
 	}
 
 	/**
 	* update iconfont
-	* @param token
+	* @param userId
 	*/
 	@Post("/iconfont/update")
 	async updateIconFont(
 		@Body(new Validation({ groups: ["update"] })) dto: IconFontDto,
-		@Headers("x-token") token: string
+		@Headers(UserHeader) userId: string
 	) {
-		const rel = await this.service.updateIconFont(dto, token);
+		const rel = await this.service.updateIconFont(dto, userId);
 		console.log(rel);
 		return this.success(true);
 	}
