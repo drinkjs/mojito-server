@@ -55,7 +55,8 @@ export default class UserService extends BaseService {
         name,
         style,
         layers,
-        coverImg
+        coverImg,
+        createAt: new Date(),
       });
     }
 		
