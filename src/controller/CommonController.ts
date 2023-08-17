@@ -34,7 +34,7 @@ export default class CommonController extends BaseController {
     fs.createReadStream(file.filepath).pipe(fs.createWriteStream(savePath));
 
     return this.success({
-      path: `${config.staticPrefix}${urlPath}`,
+      path: `${config.staticPrefix}/${urlPath}`,
     });
   }
 }

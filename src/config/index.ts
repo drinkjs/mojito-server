@@ -21,7 +21,7 @@ const defaultConfig: IConfig = {
   logger: false,
   controllers: path.join(__dirname, "../controller"),
   staticPath,
-  staticPrefix: "/public/",
+  staticPrefix: "/public",
   mongo: {
     // see https://mongoosejs.com/
     uris: "mongodb://127.0.0.1:27017/",

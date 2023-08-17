@@ -16,7 +16,7 @@ export default async function plugin(server: FastifyInstance) {
 	// 支持静态文件读取
 	await server.register(fastifyStatic, {
 		root: config.staticPath,
-		prefix: config.staticPrefix,
+		prefix: `${config.staticPrefix}/`,
 	});
 
 	await server.register(jwt, {
