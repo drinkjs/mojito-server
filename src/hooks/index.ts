@@ -24,7 +24,7 @@ export default async function hook(server: FastifyInstance) {
 
   server.addHook("onRequest", async (request, reply) => {
     const { routerPath } = request;
-    if (routerPath === config.staticPrefix || routerPath === "/user/auth") {
+    if (routerPath === config.staticPrefix || routerPath === `${config.staticPrefix}/*` || routerPath === "/user/auth") {
       // 访问静态资源
       return;
     }
