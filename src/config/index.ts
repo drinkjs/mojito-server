@@ -16,7 +16,7 @@ export type IConfig = {
 } & (NgulfHttpOptions | NgulfHtt2Options | NgulfHttsOptions);
 
 const defaultConfig: IConfig = {
-  port: 3838,
+  port: 3840,
   websocket: true, // 是否启用websocket
   logger: false,
   controllers: path.join(__dirname, "../controller"),
