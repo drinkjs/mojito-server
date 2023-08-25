@@ -2,6 +2,13 @@ import { AppError } from "ngulf";
 import { FastifyInstance } from "fastify";
 import config, { UserHeader } from "../config";
 
+const WhiteList = [
+  config.staticPrefix,
+  `${config.staticPrefix}/*`,
+  "/user/auth",
+  "/screen/viewer/detail"
+]
+
 export default async function hook(server: FastifyInstance) {
   // 异常处理
   server.setErrorHandler((error, request, reply) => {
@@ -24,7 +31,7 @@ export default async function hook(server: FastifyInstance) {
 
   server.addHook("onRequest", async (request, reply) => {
     const { routerPath } = request;
-    if (routerPath === config.staticPrefix || routerPath === `${config.staticPrefix}/*` || routerPath === "/user/auth") {
+    if (WhiteList.includes(routerPath)) {
       // 访问静态资源
       return;
     }
@@ -32,7 +39,7 @@ export default async function hook(server: FastifyInstance) {
     if (!token) {
       reply.send({
         code: 403,
-        msg: "No Token",
+        msg: "",
       });
     }
     try {
