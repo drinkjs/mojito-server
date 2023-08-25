@@ -6,7 +6,7 @@ const WhiteList = [
   config.staticPrefix,
   `${config.staticPrefix}/*`,
   "/user/auth",
-  "/screen/viewer/detail"
+  "/api/screen/viewer/detail"
 ]
 
 export default async function hook(server: FastifyInstance) {
