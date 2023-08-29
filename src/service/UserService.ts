@@ -17,7 +17,7 @@ export default class UserService extends BaseService {
 
 	async add(data: {
 		name: string;
-		email: string;
+		email?: string;
 		from: string;
 		authUserId?: string;
 		avatarUrl?: string;

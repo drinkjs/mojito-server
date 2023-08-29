@@ -5,6 +5,7 @@ import config, { UserHeader } from "../config";
 const WhiteList = [
   config.staticPrefix,
   `${config.staticPrefix}/*`,
+  "/user/dev/auth",
   "/user/auth",
   "/screen/viewer/detail",
 ]
