@@ -22,20 +22,18 @@ export default class UserController extends BaseController {
 		super();
 	}
 
-	// @Get("/dev/auth")
-	// async devAuth(ctx: RouterContext) {
-	// 	if (process.env.NODE_ENV === "development") {
-	// 		const id = DEV_USER_ID;
-	// 		return this.success({
-	// 			token: ctx.server.jwt.sign({ name: "local_dev", id }),
-	// 			name: "local_dev",
-	// 			id,
-	// 		});
-	// 	}
-	// }
-
 	@Get("/auth")
 	async add(@Query(new Validation()) dto: LoginDto, ctx: RouterContext) {
+
+		if (process.env.NODE_ENV === "development") {
+			const id = DEV_USER_ID;
+			return this.success({
+				token: ctx.server.jwt.sign({ name: "local_dev", id }),
+				name: "local_dev",
+				id,
+			});
+		}
+
 		let loginRel: {
 			token: string;
 			name: string;
