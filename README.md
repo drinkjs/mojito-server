@@ -26,7 +26,7 @@ jwt_secret=jwt secret
 npm install
 npm start
 ```
-### OAuth 配置说明
+## OAuth 配置说明
 [Github OAuth](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app)
 
 [Gitee OAuth](https://gitee.com/api/v5/oauth_doc#/list-item-1)
