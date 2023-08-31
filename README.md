@@ -11,7 +11,8 @@ npm run dev
 ```
 ## 生产
 
-### .env.production
+### 创建环境变量文件
+.env.production
 
 ```
 github_client_secrets=github secrets
@@ -25,7 +26,7 @@ jwt_secret=jwt secret
 npm install
 npm start
 ```
-
+### OAuth 配置说明
 [Github OAuth](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app)
 
 [Gitee OAuth](https://gitee.com/api/v5/oauth_doc#/list-item-1)
@@ -36,11 +37,6 @@ npm start
 docker pull drinkjs/mojito-server
 ```
 
-``` bash
-docker run --env-file=./.env.production -p 3840:3840 --name=mojito_server -d drinkjs/mojito-server
-```
-
-## 指定mongo
 ``` bash
 docker run --env-file=./.env.production -p 3840:3840 --name=mojito_server -d -e MONGO_CONNECTION=mongodb://MyHost:27017/ drinkjs/mojito-server
 ```
