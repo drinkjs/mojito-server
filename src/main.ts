@@ -7,7 +7,7 @@ const app = Ngulf.create({ ...config, hooks, plugin });
 app
   .listen({
     port: config.port,
-    host: process.env.NODE_ENV === "development" ? "0.0.0.0" : "127.0.0.1",
+    host: "0.0.0.0",
   })
   .then(() => {
     console.log(`mojito-server listen on ${config.port}`);

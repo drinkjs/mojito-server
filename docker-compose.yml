@@ -1,0 +1,36 @@
+version: '3.8'
+networks:
+  mojito-net:
+    external: true
+
+services:
+ mojito-server:
+  image: drinkjs/mojito-server
+  container_name: mojito_server
+  build:
+   context: .
+  env_file:
+   ./.env.production
+  ports:
+   - 3840:3840
+  environment:
+   - SERVER_PORT=3840
+   - MONGO_CONNECTION=mongodb://mongo:27017/
+  networks:
+   - mojito-net
+  volumes:
+   - ./data/mojito_server/public:/app/mojito_server/public
+  depends_on:
+   - mongo
+  command: ./wait-for-it.sh -t 0 mongo:27017 -- npm run start:docker
+
+ mongo:
+  image: mongo:4.2.24
+  container_name: mongo
+  ports:
+  - 27018:27017
+  networks:
+   - mojito-net
+  volumes:
+  - ./data/mongodb:/data/db
+  - ./data/mongodb_config:/data/configdb

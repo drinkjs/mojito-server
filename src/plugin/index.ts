@@ -21,7 +21,7 @@ export default async function plugin(server: FastifyInstance) {
 
 	await server.register(jwt, {
 		// 生产环境需要配置.env.production
-		secret: process.env.jwt_secret!,
+		secret: process.env.jwt_secret ?? "mojito-server",
 		sign: {
 			expiresIn: '30d'
 		}

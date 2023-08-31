@@ -11,7 +11,8 @@
     "list": "pm2 list",
     "logs": "pm2 logs",
     "start": "npm run build && pm2 start ecosystem.config.js",
-    "build": "tsc --project tsconfig.json && node replaceTsPath.js"
+    "build": "tsc --project tsconfig.json && node replaceTsPath.js",
+    "start:docker":"npm run build && pm2-runtime ecosystem.config.js"
   },
   "keywords": [],
   "author": "",

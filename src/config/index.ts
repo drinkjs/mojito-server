@@ -16,15 +16,15 @@ export type IConfig = {
 } & (NgulfHttpOptions | NgulfHtt2Options | NgulfHttsOptions);
 
 const defaultConfig: IConfig = {
-  port: 3840,
+  port: process.env.SERVER_PORT ? parseInt(process.env.SERVER_PORT) : 3840,
   websocket: true, // 是否启用websocket
   logger: false,
   controllers: path.join(__dirname, "../controller"),
   staticPath,
   staticPrefix: "/public",
   mongo: {
-    // see https://mongoosejs.com/
-    uris: "mongodb://127.0.0.1:27017/",
+    // see https://mongoosejs.com/docs/connections.html
+    uris: process.env.MONGO_CONNECTION ?? "mongodb://127.0.0.1:27017/",
     options: {
       dbName: "mojito",
       autoCreate: true,
