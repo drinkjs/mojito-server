@@ -14,7 +14,7 @@ import {
 	AppError,
 } from "ngulf";
 
-const DEV_USER_ID = "64d4a50ac89b1a65574670d2"
+const NOT_LOGIN_USER_ID = "64d4a50ac89b1a65574670d2"
 
 @Controller("/user")
 export default class UserController extends BaseController {
@@ -25,11 +25,11 @@ export default class UserController extends BaseController {
 	@Get("/auth")
 	async add(@Query(new Validation()) dto: LoginDto, ctx: RouterContext) {
 
-		if (process.env.NODE_ENV === "development") {
-			const id = DEV_USER_ID;
+		if (process.env.NOT_LOGIN) {
+			const id = NOT_LOGIN_USER_ID;
 			return this.success({
-				token: ctx.server.jwt.sign({ name: "local_dev", id }),
-				name: "local_dev",
+				token: ctx.server.jwt.sign({ name: "NOT_LOGIN", id }),
+				name: "NOT_LOGIN",
 				id,
 			});
 		}
@@ -69,10 +69,10 @@ export default class UserController extends BaseController {
 	@Get("/refresh")
 	async refresh(@Headers(UserHeader) userId: string) {
 
-    if (process.env.NODE_ENV === "development") {
-			const id = DEV_USER_ID;
+    if (process.env.NOT_LOGIN) {
+			const id = NOT_LOGIN_USER_ID;
 			return this.success({
-				name: "local_dev",
+				name: "NOT_LOGIN",
 				id,
 			});
 		}
@@ -90,8 +90,8 @@ export default class UserController extends BaseController {
 	}
 
 	async githubAuth(code: string) {
-		const client_id = process.env.github_client_id;
-		const client_secret = process.env.github_client_secrets;
+		const client_id = process.env.GITHUB_CLIENT_ID;
+		const client_secret = process.env.GITHUB_CLIENT_SECRETS;
 		const response = await axios.post(
 			"https://github.com/login/oauth/access_token",
 			{ code, client_id, client_secret },
@@ -100,11 +100,11 @@ export default class UserController extends BaseController {
 					Accept: "application/json",
 				},
 				proxy:
-					process.env.proxy_host && process.env.proxy_port
+					process.env.PROXY_HOST && process.env.PROXY_PORT
 						? {
 								protocol: "http",
-								host: process.env.proxy_host,
-								port: parseInt(process.env.proxy_port, 10),
+								host: process.env.PROXY_HOST,
+								port: parseInt(process.env.PROXY_PORT, 10),
 						  }
 						: undefined,
 			}
@@ -123,11 +123,11 @@ export default class UserController extends BaseController {
 					Authorization: `Bearer ${access_token}`,
 				},
 				proxy:
-					process.env.proxy_host && process.env.proxy_port
+					process.env.PROXY_HOST && process.env.PROXY_PORT
 						? {
 								protocol: "http",
-								host: process.env.proxy_host,
-								port: parseInt(process.env.proxy_port, 10),
+								host: process.env.PROXY_HOST,
+								port: parseInt(process.env.PROXY_PORT, 10),
 						  }
 						: undefined,
 			});
@@ -154,8 +154,8 @@ export default class UserController extends BaseController {
 	}
 
 	async giteeAuth(code: string, redirectUri?: string) {
-		const client_id = process.env.gitee_client_id;
-		const client_secret = process.env.gitee_client_secrets;
+		const client_id = process.env.GITEE_CLIENT_ID;
+		const client_secret = process.env.GITEE_CLIENT_SECRETS;
 		const response = await axios.post(
 			`https://gitee.com/oauth/token?grant_type=authorization_code&code=${code}&client_id=${client_id}&redirect_uri=${redirectUri}`,
 			{ client_secret },

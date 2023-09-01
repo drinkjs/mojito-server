@@ -15,11 +15,11 @@ npm run dev
 .env.production
 
 ```
-github_client_secrets=github secrets
-github_client_id=github client id
-gitee_client_secrets=gitee secrets
-gitee_client_id=gitee client id
-jwt_secret=jwt secret
+GITHUB_CLIENT_SECRETS=github secrets
+GITHUB_CLIENT_ID=github client id
+GITEE_CLIENT_SECRETS=gitee secrets
+GITEE_CLIENT_ID=gitee client id
+JWT_SECRET=jwt secret
 ```
 
 ``` bash
