@@ -1,19 +1,21 @@
-import ProjectEntity from "@/entity/ProjectEntity";
-import ScreenEntity from "@/entity/ScreenEntity";
-import UserEntity from "@/entity/UserEntity";
-import { AppError, Injectable, MgModel, MgModelType } from "ngulf";
+import ProjectEntity from "../entity/ProjectEntity";
+import ScreenEntity from "../entity/ScreenEntity";
+import UserEntity from "../entity/UserEntity";
+import { AppError, Injectable } from "ngulf";
+import { Mongo } from "@ngulf/mongo";
+import type { MongoModel } from "@ngulf/mongo";
 import BaseService from "./BaseService";
 
 @Injectable()
 export default class UserService extends BaseService {
-	@MgModel(UserEntity)
-	private model!: MgModelType<UserEntity>;
+	@Mongo(UserEntity)
+	private model!: MongoModel<UserEntity>;
 
-	@MgModel(ProjectEntity)
-	private projectModel!: MgModelType<ProjectEntity>;
+	@Mongo(ProjectEntity)
+	private projectModel!: MongoModel<ProjectEntity>;
 
-	@MgModel(ScreenEntity)
-	private screenModel!: MgModelType<ScreenEntity>;
+	@Mongo(ScreenEntity)
+	private screenModel!: MongoModel<ScreenEntity>;
 
 	async add(data: {
 		name: string;

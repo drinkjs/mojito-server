@@ -1,5 +1,4 @@
-import { ObjectId } from "ngulf/mongoose";
-import { Ref, modelOptions, mongoose, prop, Severity } from "ngulf/typegoose";
+import { Ref, modelOptions, mongoose, prop, Severity } from "@ngulf/mongo";
 
 @modelOptions({ options: { allowMixed: Severity.ALLOW } })
 export default class Screen {

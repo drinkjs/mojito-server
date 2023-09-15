@@ -1,13 +1,15 @@
 /* eslint-disable no-underscore-dangle */
-import { Injectable, MgModel, MgModelType, AppError } from "ngulf";
+import { Injectable, AppError } from "ngulf";
 import { ProjectDto } from "../dto";
 import ProjectEntity from "../entity/ProjectEntity";
 import BaseService from "./BaseService";
+import { Mongo } from "@ngulf/mongo";
+import type { MongoModel } from "@ngulf/mongo";
 
 @Injectable()
 export default class ProjectService extends BaseService {
-  @MgModel(ProjectEntity)
-  private model!: MgModelType<ProjectEntity>;
+  @Mongo(ProjectEntity)
+  private model!: MongoModel<ProjectEntity>;
 
   /**
    * 新增项目

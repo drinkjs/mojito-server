@@ -1,9 +1,10 @@
 import Ngulf from "ngulf";
 import config from "./config";
-import hooks from "./hooks";
+import hook from "./hooks";
 import plugin from "./plugin";
+import inject from "./inject";
 
-const app = Ngulf.create({ ...config, hooks, plugin });
+const app = Ngulf.create({ ...config, hook, plugin, inject });
 app
   .listen({
     port: config.port,
@@ -12,3 +13,5 @@ app
   .then(() => {
     console.log(`mojito-server listen on ${config.port}`);
   });
+
+console.log("ffffffffff")

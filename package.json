@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env NODE_ENV=development nodemon",
@@ -10,30 +11,28 @@
     "remove": "pm2 delete mojito-server",
     "list": "pm2 list",
     "logs": "pm2 logs",
-    "start": "npm run build && pm2 start ecosystem.config.js",
-    "build": "tsc --project tsconfig.json && node replaceTsPath.js",
-    "start:docker":"npm run build && pm2-runtime ecosystem.config.js"
+    "start": "pm2 start ecosystem.config.cjs",
+    "start:docker": "pm2-runtime ecosystem.config.cjs"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@fastify/formbody": "^7.4.0",
     "@fastify/jwt": "^7.2.0",
     "@fastify/multipart": "^7.7.0",
     "@fastify/static": "^6.10.2",
-    "@types/uuid": "^9.0.2",
-    "@types/ws": "^8.5.5",
+    "@ngulf/mongo": "^1.0.3",
     "axios": "^1.4.0",
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.9",
     "dotenv": "^16.3.1",
-    "ngulf": "^0.5.4",
-    "uuid": "^9.0.0",
-    "ws": "^8.13.0"
+    "ngulf": "^0.7.2",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/node": "^18.11.9",
+    "@types/uuid": "^9.0.2",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "colors": "^1.4.0",
     "eslint": "^8.44.0",
@@ -47,6 +46,9 @@
     "pm2": "^5.3.0",
     "prettier": "^2.1.2",
     "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
+    "tslib": "^2.6.2",
+    "tsx": "^3.12.8",
     "typescript": "^5.1.6"
   },
   "nodemonConfig": {
@@ -65,7 +67,6 @@
   },
   "lint-staged": {
     "**/*.{js,ts}": [
-      "prettier --write",
       "eslint --fix",
       "git add"
     ]

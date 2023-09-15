@@ -1,5 +1,5 @@
-import { UserHeader } from "@/config";
-import ComponentService from "@/service/ComponentService";
+import { UserHeader } from "../config";
+import ComponentService from "../service/ComponentService";
 import {
   Body,
   Controller,

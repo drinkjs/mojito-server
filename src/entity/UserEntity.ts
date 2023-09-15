@@ -1,4 +1,4 @@
-import { prop } from "ngulf/typegoose";
+import { prop } from "@ngulf/mongo";
 
 export default class User {
   @prop({ required: true })

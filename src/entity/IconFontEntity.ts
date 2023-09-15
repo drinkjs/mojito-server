@@ -1,4 +1,4 @@
-import { modelOptions, prop } from "ngulf/typegoose";
+import { modelOptions, prop } from "@ngulf/mongo";
 
 @modelOptions({ options: { customName: "iconfont"} })
 export default class IconFont {

@@ -1,4 +1,4 @@
-import { UserHeader } from "@/config";
+import { UserHeader } from "../config";
 import {
   Controller,
   Get,

@@ -1,4 +1,4 @@
-import { modelOptions, mongoose, prop, Severity } from "ngulf/typegoose";
+import { modelOptions, mongoose, prop, Severity } from "@ngulf/mongo";
 
 @modelOptions({ options: { customName: "component_type", allowMixed: Severity.ALLOW } })
 export default class ComponentType {

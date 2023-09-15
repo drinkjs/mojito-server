@@ -1,6 +1,6 @@
-import { UserHeader } from "@/config";
-import { LoginDto } from "@/dto/LoginDto";
-import UserService from "@/service/UserService";
+import { UserHeader } from "../config";
+import { LoginDto } from "../dto/LoginDto";
+import UserService from "../service/UserService";
 import axios from "axios";
 import {
 	BaseController,
@@ -8,13 +8,13 @@ import {
 	Controller,
 	Get,
 	Query,
-	RouterContext,
 	Validation,
 	Headers,
 	AppError,
 } from "ngulf";
+import type { RouterContext } from "ngulf";
 
-const NOT_LOGIN_USER_ID = "64d4a50ac89b1a65574670d2"
+const NOT_LOGIN_USER_ID = "64d4a50ac89b1a65574670d2";
 
 @Controller("/user")
 export default class UserController extends BaseController {
@@ -24,7 +24,6 @@ export default class UserController extends BaseController {
 
 	@Get("/auth")
 	async add(@Query(new Validation()) dto: LoginDto, ctx: RouterContext) {
-
 		if (process.env.NOT_LOGIN) {
 			const id = NOT_LOGIN_USER_ID;
 			return this.success({
@@ -68,8 +67,7 @@ export default class UserController extends BaseController {
 
 	@Get("/refresh")
 	async refresh(@Headers(UserHeader) userId: string) {
-
-    if (process.env.NOT_LOGIN) {
+		if (process.env.NOT_LOGIN) {
 			const id = NOT_LOGIN_USER_ID;
 			return this.success({
 				name: "NOT_LOGIN",

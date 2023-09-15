@@ -1,5 +1,5 @@
 import { AppError } from "ngulf";
-import { FastifyInstance } from "fastify";
+import { FastifyInstance } from "ngulf/fastify";
 import config, { UserHeader } from "../config";
 
 const WhiteList = [

@@ -1,5 +1,5 @@
-import { UserHeader } from "@/config";
-import { IconFontDto } from "@/dto/IconFontDto";
+import { UserHeader } from "../config";
+import { IconFontDto } from "../dto/IconFontDto";
 import {
 	Body,
 	Controller,

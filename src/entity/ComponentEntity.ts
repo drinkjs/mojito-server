@@ -1,4 +1,4 @@
-import { index, modelOptions, mongoose, prop, Severity } from "ngulf/typegoose";
+import { index, modelOptions, mongoose, prop, Severity } from "@ngulf/mongo";
 
 @modelOptions({ options: { allowMixed: Severity.ALLOW } })
 @index({ name: 1, version:1 }, { unique: true })

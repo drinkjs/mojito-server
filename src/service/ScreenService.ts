@@ -1,5 +1,6 @@
-import { mongoose } from "@typegoose/typegoose";
-import { Injectable, MgModel, MgModelType, AppError } from "ngulf";
+import { Injectable, AppError } from "ngulf";
+import { Mongo, mongoose } from "@ngulf/mongo";
+import type { MongoModel } from "@ngulf/mongo";
 import { ScreenDto } from "../dto";
 import ScreenEntity from "../entity/ScreenEntity";
 import BaseService from "./BaseService";
@@ -11,8 +12,8 @@ export default class ScreenService extends BaseService {
     super();
   }
 
-  @MgModel(ScreenEntity)
-  private model!: MgModelType<ScreenEntity>;
+  @Mongo(ScreenEntity)
+  private model!: MongoModel<ScreenEntity>;
 
   /**
    * 新增页面

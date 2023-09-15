@@ -1,16 +1,13 @@
-import { OPEN } from "ws";
+import WebSocket from "ngulf/websocket";
 import {
+	BaseController,
 	Controller,
-	Get,
-	Query,
+	WebsocketEmitter,
+	WebsocketEvent,
 	WebSocketServer,
 	WSS,
-	WebsocketEvent,
-	WsClient,
-	WebsocketEmitter,
-	BaseController,
-	WsMessage,
 } from "ngulf";
+import type { WsClient, WsMessage } from "ngulf";
 
 interface JoinPage {
 	pageId: string;
@@ -106,7 +103,11 @@ export default class EventSyncController extends BaseController {
 	 */
 	sendMessage(client: WsClient, msg: any) {
 		try {
-			if (client && client.socket && client.socket.readyState === OPEN) {
+			if (
+				client &&
+				client.socket &&
+				client.socket.readyState === WebSocket.OPEN
+			) {
 				const msgString = JSON.stringify(msg);
 				client.socket.send(msgString, (err: any) => {
 					if (err) {
