@@ -4,7 +4,7 @@ module.exports = {
       name: "mojito-server",
       script: "./src/main.ts",
       interpreter: 'node',
-      interpreterArgs: '--loader tsx',
+      interpreterArgs: '--loader ./es-loader.js',
       exec_mode: "cluster",
       watch: false,
       env: {

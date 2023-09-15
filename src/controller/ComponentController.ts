@@ -1,5 +1,5 @@
-import { UserHeader } from "../config";
-import { IconFontDto } from "../dto/IconFontDto";
+import { UserHeader } from "@/config";
+import { IconFontDto } from "@/dto/IconFontDto";
 import {
 	Body,
 	Controller,
@@ -10,8 +10,8 @@ import {
 	BaseController,
 	Headers
 } from "ngulf";
-import { ComponentDto, ComponentTypeDto } from "../dto";
-import ComponentService from "../service/ComponentService";
+import { ComponentDto, ComponentTypeDto } from "@/dto";
+import ComponentService from "@/service/ComponentService";
 @Controller("/component")
 export default class ComponentController extends BaseController {
 	constructor(private readonly service: ComponentService) {

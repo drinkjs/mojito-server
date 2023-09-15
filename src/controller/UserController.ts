@@ -1,6 +1,6 @@
-import { UserHeader } from "../config";
-import { LoginDto } from "../dto/LoginDto";
-import UserService from "../service/UserService";
+import { UserHeader } from "@/config";
+import { LoginDto } from "@/dto/LoginDto";
+import UserService from "@/service/UserService";
 import axios from "axios";
 import {
 	BaseController,

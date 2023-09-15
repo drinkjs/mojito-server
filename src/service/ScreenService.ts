@@ -1,8 +1,8 @@
 import { Injectable, AppError } from "ngulf";
 import { Mongo, mongoose } from "@ngulf/mongo";
 import type { MongoModel } from "@ngulf/mongo";
-import { ScreenDto } from "../dto";
-import ScreenEntity from "../entity/ScreenEntity";
+import { ScreenDto } from "@/dto";
+import ScreenEntity from "@/entity/ScreenEntity";
 import BaseService from "./BaseService";
 
 @Injectable()

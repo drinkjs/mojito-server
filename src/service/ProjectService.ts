@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { Injectable, AppError } from "ngulf";
-import { ProjectDto } from "../dto";
-import ProjectEntity from "../entity/ProjectEntity";
+import { ProjectDto } from "@/dto";
+import ProjectEntity from "@/entity/ProjectEntity";
 import BaseService from "./BaseService";
 import { Mongo } from "@ngulf/mongo";
 import type { MongoModel } from "@ngulf/mongo";

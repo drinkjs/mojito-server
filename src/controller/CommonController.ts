@@ -2,8 +2,8 @@ import * as fs from "fs";
 import { v4 as uuidv4 } from "uuid";
 import { Controller, Post, BaseController } from "ngulf";
 import type { RouterContext } from "ngulf/types";
-import { createStringDate } from "../common/utils";
-import config from "../config";
+import { createStringDate } from "@/common/utils";
+import config from "@/config";
 import path from "path";
 
 @Controller()

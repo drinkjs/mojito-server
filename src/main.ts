@@ -1,5 +1,5 @@
 import Ngulf from "ngulf";
-import config from "./config";
+import config from "@/config";
 import hook from "./hooks";
 import plugin from "./plugin";
 import inject from "./inject";
@@ -13,5 +13,3 @@ app
   .then(() => {
     console.log(`mojito-server listen on ${config.port}`);
   });
-
-console.log("ffffffffff")

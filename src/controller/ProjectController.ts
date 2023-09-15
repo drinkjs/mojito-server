@@ -1,4 +1,4 @@
-import { UserHeader } from "../config";
+import { UserHeader } from "@/config";
 import {
   Controller,
   Get,
@@ -9,8 +9,8 @@ import {
   BaseController,
   Headers,
 } from "ngulf";
-import { ProjectDto } from "../dto";
-import ProjectService from "../service/ProjectService";
+import { ProjectDto } from "@/dto";
+import ProjectService from "@/service/ProjectService";
 
 @Controller("/project")
 export default class ProjectController extends BaseController {

@@ -2,7 +2,7 @@ import { FastifyInstance } from "ngulf/fastify";
 import fastifyMultipart from "@fastify/multipart";
 import fastifyStatic from "@fastify/static";
 import jwt from "@fastify/jwt";
-import config from "../config";
+import config from "@/config";
 
 export default async function plugin(server: FastifyInstance) {
 	// 支持上传文件

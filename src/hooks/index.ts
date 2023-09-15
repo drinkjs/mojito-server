@@ -1,6 +1,6 @@
 import { AppError } from "ngulf";
 import { FastifyInstance } from "ngulf/fastify";
-import config, { UserHeader } from "../config";
+import config, { UserHeader } from "@/config";
 
 const WhiteList = [
   config.staticPrefix,

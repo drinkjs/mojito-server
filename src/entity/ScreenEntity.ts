@@ -9,7 +9,7 @@ export default class Screen {
   name!: string;
 
   @prop({ type: mongoose.Schema.Types.Mixed })
-  style?: ScreenOptions;
+  style?: any;
 
   @prop()
   createAt?: Date;
@@ -21,7 +21,7 @@ export default class Screen {
   coverImg?: string;
 
   @prop()
-  layers?: Layer[];
+  layers?: any[];
 
   @prop({ select: false, default: null })
   deleteAt?: Date;

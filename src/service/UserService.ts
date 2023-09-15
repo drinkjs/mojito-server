@@ -1,6 +1,6 @@
-import ProjectEntity from "../entity/ProjectEntity";
-import ScreenEntity from "../entity/ScreenEntity";
-import UserEntity from "../entity/UserEntity";
+import ProjectEntity from "@/entity/ProjectEntity";
+import ScreenEntity from "@/entity/ScreenEntity";
+import UserEntity from "@/entity/UserEntity";
 import { AppError, Injectable } from "ngulf";
 import { Mongo } from "@ngulf/mongo";
 import type { MongoModel } from "@ngulf/mongo";

@@ -1,9 +1,9 @@
 import { Injectable, AppError } from "ngulf";
-import ComponentTypeEntity from "../entity/ComponentTypeEntity";
-import ComponentEntity from "../entity/ComponentEntity";
-import { ComponentDto, ComponentTypeDto } from "../dto";
+import ComponentTypeEntity from "@/entity/ComponentTypeEntity";
+import ComponentEntity from "@/entity/ComponentEntity";
+import { ComponentDto, ComponentTypeDto } from "@/dto";
 import BaseService from "./BaseService";
-import IconFontEntity from "../entity/IconFontEntity";
+import IconFontEntity from "@/entity/IconFontEntity";
 import { Mongo, mongoose } from "@ngulf/mongo";
 import type { MongoModel } from "@ngulf/mongo";
 
@@ -17,11 +17,6 @@ export default class ComponentService extends BaseService {
 
 	@Mongo(IconFontEntity)
 	private iconModel!: MongoModel<IconFontEntity>;
-
-	constructor() {
-		super();
-		console.log("-----ComponentService-------");
-	}
 
 	/**
 	 * 查询所有分类

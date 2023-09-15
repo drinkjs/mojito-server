@@ -1,5 +1,5 @@
-import { UserHeader } from "../config";
-import ComponentService from "../service/ComponentService";
+import { UserHeader } from "@/config";
+import ComponentService from "@/service/ComponentService";
 import {
   Body,
   Controller,
@@ -10,8 +10,8 @@ import {
   BaseController,
   Headers
 } from "ngulf";
-import { ScreenDto } from "../dto";
-import ScreenService from "../service/ScreenService";
+import { ScreenDto } from "@/dto";
+import ScreenService from "@/service/ScreenService";
 
 @Controller("/screen")
 export default class ScreenController extends BaseController {
