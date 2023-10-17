@@ -7,8 +7,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env NODE_ENV=development nodemon",
-    "start": "pm2 start ecosystem.config.cjs",
-    "start:docker": "pm2-runtime ecosystem.config.cjs"
+    "start": "PM2_HOME=./.pm2 pm2 start pm2.config.cjs",
+    "stop": "PM2_HOME=./.pm2 pm2 kill",
+    "logs": "PM2_HOME=./.pm2 pm2 logs",
+    "list": "PM2_HOME=./.pm2 pm2 list",
+    "start:docker": "pm2-runtime pm2.config.cjs"
   },
   "keywords": [],
   "author": "",

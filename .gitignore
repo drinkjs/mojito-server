@@ -3,3 +3,4 @@ public
 .env.production
 dist
 data
+.pm2
