@@ -1,5 +1,5 @@
 import Ngulf from "ngulf";
-import config from "@/config";
+import config from "./config";
 import hook from "./hooks";
 import plugin from "./plugin";
 import inject from "./inject";
