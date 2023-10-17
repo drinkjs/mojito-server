@@ -7,10 +7,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env NODE_ENV=development nodemon",
-    "stop": "pm2 stop mojito-server",
-    "remove": "pm2 delete mojito-server",
-    "list": "pm2 list",
-    "logs": "pm2 logs",
     "start": "pm2 start ecosystem.config.cjs",
     "start:docker": "pm2-runtime ecosystem.config.cjs"
   },
